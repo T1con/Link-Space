@@ -66,10 +66,15 @@
                     <div class="d-flex align-items-center">
                         <img src="{{ url_for('static', filename='avatars/' + post.username + '.png') }}" 
                              alt="Avatar" class="rounded-circle me-2" 
-                             style="width: 40px; height: 40px; object-fit: cover;"
-                             onerror="this.src='https://via.placeholder.com/40x40/667eea/ffffff?text={{ post.username[0]|upper }}'">
+                             style="width: 44px; height: 44px; object-fit: cover; border: 2px solid #667eea;"
+                             onerror="this.src='https://ui-avatars.com/api/?name={{ post.username }}&background=667eea&color=fff&size=44'">
                         <div>
-                            <h6 class="mb-0 fw-bold">@{{ post.username }}</h6>
+                            <h6 class="mb-0 fw-bold d-flex align-items-center">
+                                @{{ post.username }}
+                                {% if post.badge %}
+                                <span class="badge bg-warning text-dark ms-2" style="font-size:12px;">{{ post.badge }}</span>
+                                {% endif %}
+                            </h6>
                             <small class="text-muted">
                                 <i class="fas fa-clock"></i> {{ post.timestamp }}
                             </small>
@@ -83,27 +88,32 @@
                     {% if post.media %}
                     <div class="text-center mb-3">
                         {% if post.media.endswith(('.mp4', '.avi', '.mov')) %}
-                            <video class="post-media" controls>
+                            <video class="post-media" controls style="max-width:100%;border-radius:12px;">
                                 <source src="{{ url_for('static', filename=post.media) }}" type="video/mp4">
                                 Trình duyệt không hỗ trợ video.
                             </video>
                         {% else %}
                             <img src="{{ url_for('static', filename=post.media) }}" 
-                                 alt="Media" class="post-media">
+                                 alt="Media" class="post-media" style="max-width:100%;border-radius:12px;">
                         {% endif %}
                     </div>
                     {% endif %}
                     
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button class="btn btn-sm btn-outline-danger like-btn {% if username in post.likes %}liked{% endif %}" 
-                                data-post-id="{{ post.id }}" onclick="likePost('{{ post.id }}')">
-                            <i class="{% if username in post.likes %}fas{% else %}far{% endif %} fa-heart"></i>
-                            <span data-post-count="{{ post.id }}">{{ post.likes|length }}</span>
-                        </button>
-                        
-                        <small class="text-muted">
-                            <i class="fas fa-comment"></i> {{ post.comments|length }} bình luận
-                        </small>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div>
+                            <button class="btn btn-sm btn-outline-danger like-btn {% if username in post.likes %}liked{% endif %}" 
+                                    data-post-id="{{ post.id }}" onclick="likePost('{{ post.id }}', this)">
+                                <i class="{% if username in post.likes %}fas{% else %}far{% endif %} fa-heart"></i>
+                                <span data-post-count="{{ post.id }}">{{ post.likes|length }}</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary ms-2" disabled>
+                                <i class="fas fa-comment"></i> {{ post.comments|length }}
+                            </button>
+                            <button class="btn btn-sm btn-outline-info ms-2" disabled>
+                                <i class="fas fa-share"></i>
+                            </button>
+                        </div>
+                        <!-- Có thể thêm menu chỉnh sửa/xóa nếu là chủ post -->
                     </div>
                 </div>
             </div>
@@ -124,7 +134,22 @@
 </div>
 
 <!-- Floating Action Button -->
-<a href="{{ url_for('create_post') }}" class="floating-btn">
+<a href="{{ url_for('create_post') }}" class="floating-btn" title="Tạo bài đăng mới">
     <i class="fas fa-plus"></i>
 </a>
+
+<!-- Like Post Script (hiệu ứng like động, không reload) -->
+<script>
+function likePost(postId, btn) {
+    btn.classList.toggle('liked');
+    let icon = btn.querySelector('i');
+    let countSpan = btn.querySelector('span');
+    let liked = btn.classList.contains('liked');
+    icon.classList.toggle('fas', liked);
+    icon.classList.toggle('far', !liked);
+    let count = parseInt(countSpan.innerText);
+    countSpan.innerText = liked ? count + 1 : count - 1;
+    // TODO: Gửi request AJAX lên server để cập nhật like thực tế
+}
+</script>
 {% endblock %} 

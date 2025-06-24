@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Chat với @{{ target_user }} - Link Space{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-light bg-white shadow-sm mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{{ url_for('messages') }}">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="d-flex align-items-center">
+            <img src="{{ url_for('static', filename='avatars/' + target_user + '.png') }}" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;border:2px solid #667eea;" onerror="this.src='https://ui-avatars.com/api/?name={{ target_user }}&background=667eea&color=fff&size=40'">
+            <span class="fw-bold">@{{ target_user }}</span>
+        </div>
+        <div></div>
+    </div>
+</nav>
+<div class="container-fluid p-0" style="height:calc(100vh - 120px);display:flex;flex-direction:column;">
+    <div id="chatBox" class="flex-grow-1 overflow-auto px-2 py-2" style="background:#f7f7fa;">
+        {% if messages %}
+            {% for msg in messages %}
+            <div class="d-flex mb-2 {% if msg.sender == current_user %}justify-content-end{% else %}justify-content-start{% endif %}">
+                {% if msg.sender != current_user %}
+                <img src="{{ url_for('static', filename='avatars/' + msg.sender + '.png') }}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;border:1.5px solid #667eea;" onerror="this.src='https://ui-avatars.com/api/?name={{ msg.sender }}&background=667eea&color=fff&size=32'">
+                {% endif %}
+                <div>
+                    <div class="p-2 mb-1 rounded-3 {% if msg.sender == current_user %}bg-primary text-white{% else %}bg-light text-dark{% endif %}" style="max-width:70vw;min-width:40px;word-break:break-word;">
+                        {% if msg.type == 'text' %}{{ msg.content|default(msg.text) }}{% endif %}
+                        {% if msg.type == 'sticker' %}
+                            <img src="/{{ msg.content }}" alt="sticker" style="height:32px;">
+                        {% endif %}
+                        {% if msg.type == 'image' %}
+                            <img src="/{{ msg.content }}" alt="image" style="max-width:120px;max-height:120px;border-radius:8px;">
+                        {% endif %}
+                        {% if msg.type == 'audio' %}
+                            <audio controls src="/{{ msg.content }}" style="width:120px;"></audio>
+                        {% endif %}
+                        {% if msg.type == 'video' %}
+                            <video controls src="/{{ msg.content }}" style="max-width:120px;max-height:120px;border-radius:8px;"></video>
+                        {% endif %}
+                        {% if msg.reaction %}<span class="ms-2">{{ msg.reaction }}</span>{% endif %}
+                    </div>
+                    <div class="small text-muted text-end" style="font-size:11px;">{{ msg.timestamp }}</div>
+                </div>
+                {% if msg.sender == current_user %}
+                <img src="{{ url_for('static', filename='avatars/' + msg.sender + '.png') }}" class="rounded-circle ms-2" style="width:32px;height:32px;object-fit:cover;border:1.5px solid #667eea;" onerror="this.src='https://ui-avatars.com/api/?name={{ msg.sender }}&background=667eea&color=fff&size=32'">
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="text-center text-muted mt-5">Chưa có tin nhắn nào. Hãy bắt đầu trò chuyện!</div>
+        {% endif %}
+    </div>
+    <form method="POST" enctype="multipart/form-data" class="p-2 border-top bg-white" style="display:flex;gap:8px;align-items:center;">
+        <input type="text" name="content" id="content" class="form-control" placeholder="Nhập tin nhắn..." autocomplete="off" style="border-radius:20px;">
+        <button type="button" class="btn btn-light" onclick="addEmoji('😀')"><i class="fas fa-smile"></i></button>
+        <input type="file" name="media" id="media" accept="image/*,video/*,audio/*" style="display:none;">
+        <label for="media" class="btn btn-light mb-0"><i class="fas fa-paperclip"></i></label>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+    </form>
+</div>
+<script>
+// Emoji picker đơn giản
+function addEmoji(emoji) {
+    const input = document.getElementById('content');
+    input.value += emoji;
+    input.focus();
+}
+// Tự động cuộn xuống cuối chat
+window.onload = function() {
+    var chatBox = document.getElementById('chatBox');
+    if(chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+}
+</script>
+{% endblock %} 
