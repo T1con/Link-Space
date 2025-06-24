@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng ký - Link Space{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <div class="w-100 p-4">
+                <div class="text-center mb-4">
+                    <h1 class="display-4 fw-bold text-primary mb-3">
+                        <i class="fas fa-link"></i> Link Space
+                    </h1>
+                    <p class="text-muted">Tham gia cộng đồng</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">Đăng ký tài khoản</h3>
+                        
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">
+                                    <i class="fas fa-user"></i> Tên đăng nhập
+                                </label>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       placeholder="Chọn tên đăng nhập" required>
+                                <div class="form-text">Tên đăng nhập phải từ 3-20 ký tự</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock"></i> Mật khẩu
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Tạo mật khẩu" required>
+                                <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="confirm_password" class="form-label">
+                                    <i class="fas fa-check-circle"></i> Xác nhận mật khẩu
+                                </label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" 
+                                       placeholder="Nhập lại mật khẩu" required>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus"></i> Đăng ký
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <p class="mb-0">Đã có tài khoản?</p>
+                            <a href="{{ url_for('login') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin bảo mật -->
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-shield-alt"></i> Bảo mật thông tin
+                        </h6>
+                        <p class="card-text small text-muted">
+                            Thông tin cá nhân của bạn sẽ được bảo vệ an toàn. 
+                            Chúng tôi không chia sẻ thông tin với bên thứ ba.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Kiểm tra mật khẩu xác nhận
+document.getElementById('confirm_password').addEventListener('input', function() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = this.value;
+    
+    if (password !== confirmPassword) {
+        this.setCustomValidity('Mật khẩu xác nhận không khớp');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+document.getElementById('password').addEventListener('input', function() {
+    const confirmPassword = document.getElementById('confirm_password');
+    if (confirmPassword.value) {
+        if (this.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity('Mật khẩu xác nhận không khớp');
+        } else {
+            confirmPassword.setCustomValidity('');
+        }
+    }
+});
+</script>
+{% endblock %} 

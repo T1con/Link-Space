@@ -1,0 +1,23 @@
+[
+    {
+        "type": "text",
+        "sender": "T1con",
+        "receiver": "vinh",
+        "text": "dádsaasdsadas",
+        "timestamp": "2025-06-22T19:53:48.492865"
+    },
+    {
+        "type": "text",
+        "sender": "vinh",
+        "receiver": "T1con",
+        "text": "❤️",
+        "timestamp": "2025-06-23T11:02:14.767307"
+    },
+    {
+        "type": "text",
+        "sender": "vinh",
+        "receiver": "T1con",
+        "text": "🎉",
+        "timestamp": "2025-06-23T11:02:17.932530"
+    }
+]

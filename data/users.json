@@ -1,0 +1,61 @@
+[
+    {
+        "id": "644f55c9-2e5a-4c61-8fbb-385b6a3f6f0b",
+        "username": "admin",
+        "password": "1",
+        "friends": [
+            "T1con"
+        ],
+        "following": [
+            "T1con"
+        ]
+    },
+    {
+        "id": "6ad68ec8-37cc-4b16-8126-0b2231763a51",
+        "username": "vinh",
+        "password": "1",
+        "friends": [
+            "T1con"
+        ]
+    },
+    {
+        "id": "d21b3aa9-93b6-4e89-9e40-eca3536f239d",
+        "username": "test",
+        "password": "1"
+    },
+    {
+        "id": "93a1a681-97af-4620-9965-f25aba9f261a",
+        "username": "T1con",
+        "password": "12345654321",
+        "friends": [
+            "admin",
+            "vinh"
+        ],
+        "following": [
+            "admin",
+            "vinh"
+        ]
+    },
+    {
+        "id": "66fc2a32-745c-4f7f-883b-7c006ef7aaef",
+        "username": "Kunngu123",
+        "password": "kunsigmaboy",
+        "friends": [
+            "T1con"
+        ],
+        "following": [
+            "T1con"
+        ]
+    },
+    {
+        "id": "351287a7-8685-4c4f-aa16-3a4d0348ea36",
+        "username": "KunnguSigmaboy",
+        "password": "1",
+        "birthday": "5/10/2015"
+    },
+    {
+        "id": "78f7aef3-1a45-4a55-8498-856629bd5ac3",
+        "username": "Vinhtest",
+        "password": "vinhdeptrai123"
+    }
+]

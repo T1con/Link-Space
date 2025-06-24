@@ -1,0 +1,68 @@
+{
+    "nickname": "Vingg",
+    "bio": "Acc thằng tạo ra Link Space",
+    "following": [
+        "admin",
+        "vinh",
+        "KunnguSigmaboy"
+    ],
+    "friends": [],
+    "friend_requests": [],
+    "theme": "light",
+    "birthday": "10/3/2012",
+    "points": 999998999,
+    "level": 999,
+    "badges": [
+        "Chủ Nhân",
+        "Thách Đấu",
+        "Đại Cao Thủ",
+        "Huyền thoại",
+        "Cao thủ",
+        "Người mới",
+        "Bất Tử",
+        "Vô Hạn"
+    ],
+    "rank_special": "CHỦ NHÂN",
+    "favorites": [
+        {
+            "username": "T1con",
+            "timestamp": "2025-06-23 11:15:18"
+        },
+        {
+            "username": "KunnguSigmaboy",
+            "timestamp": "2025-06-23 18:01:07"
+        },
+        {
+            "username": "admin",
+            "timestamp": "2025-06-22T21:29:35"
+        },
+        {
+            "username": "T1con",
+            "timestamp": "2025-06-22T21:29:35"
+        },
+        {
+            "username": "vinh",
+            "timestamp": "2025-06-22T21:29:35"
+        }
+    ],
+    "hobbies": "Chơi Liên Minh",
+    "location": "Đồng Nai",
+    "idol": "Gumayusi",
+    "gender": "Nam",
+    "pets": [
+        "cat",
+        "dog",
+        "dragon",
+        "rabbit",
+        "hamster",
+        "parrot",
+        "turtle",
+        "penguin",
+        "unicorn",
+        "panda",
+        "fox",
+        "dolphin",
+        "owl"
+    ],
+    "main_pet": "dragon"
+} 

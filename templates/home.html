@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Trang chủ - Link Space{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            <i class="fas fa-link"></i> Link Space
+        </a>
+        
+        <div class="d-flex align-items-center">
+            <span class="me-3">
+                <i class="fas fa-star text-warning"></i>
+                <small class="text-muted">{{ user_data.points|default(0) }} điểm</small>
+            </span>
+            <div class="dropdown">
+                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" 
+                        data-bs-toggle="dropdown">
+                    <i class="fas fa-user"></i> {{ username }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('profile', username=username) }}">
+                        <i class="fas fa-user-circle"></i> Trang cá nhân
+                    </a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('edit_profile') }}">
+                        <i class="fas fa-edit"></i> Chỉnh sửa hồ sơ
+                    </a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="container-fluid p-3">
+    <!-- Stats Card -->
+    <div class="stats-card mb-3">
+        <div class="row text-center">
+            <div class="col-4">
+                <h4 class="mb-0">{{ user_data.points|default(0) }}</h4>
+                <small>Điểm</small>
+            </div>
+            <div class="col-4">
+                <h4 class="mb-0">{{ user_data.level|default(1) }}</h4>
+                <small>Level</small>
+            </div>
+            <div class="col-4">
+                <h4 class="mb-0">{{ user_data.badges|length|default(0) }}</h4>
+                <small>Huy hiệu</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Posts -->
+    <div class="posts-container">
+        {% if posts %}
+            {% for post in posts|sort(attribute='timestamp', reverse=true) %}
+            <div class="card">
+                <div class="card-header bg-transparent border-0">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='avatars/' + post.username + '.png') }}" 
+                             alt="Avatar" class="rounded-circle me-2" 
+                             style="width: 40px; height: 40px; object-fit: cover;"
+                             onerror="this.src='https://via.placeholder.com/40x40/667eea/ffffff?text={{ post.username[0]|upper }}'">
+                        <div>
+                            <h6 class="mb-0 fw-bold">@{{ post.username }}</h6>
+                            <small class="text-muted">
+                                <i class="fas fa-clock"></i> {{ post.timestamp }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="post-content mb-3">{{ post.content }}</p>
+                    
+                    {% if post.media %}
+                    <div class="text-center mb-3">
+                        {% if post.media.endswith(('.mp4', '.avi', '.mov')) %}
+                            <video class="post-media" controls>
+                                <source src="{{ url_for('static', filename=post.media) }}" type="video/mp4">
+                                Trình duyệt không hỗ trợ video.
+                            </video>
+                        {% else %}
+                            <img src="{{ url_for('static', filename=post.media) }}" 
+                                 alt="Media" class="post-media">
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-sm btn-outline-danger like-btn {% if username in post.likes %}liked{% endif %}" 
+                                data-post-id="{{ post.id }}" onclick="likePost('{{ post.id }}')">
+                            <i class="{% if username in post.likes %}fas{% else %}far{% endif %} fa-heart"></i>
+                            <span data-post-count="{{ post.id }}">{{ post.likes|length }}</span>
+                        </button>
+                        
+                        <small class="text-muted">
+                            <i class="fas fa-comment"></i> {{ post.comments|length }} bình luận
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Chưa có bài đăng nào</h5>
+                    <p class="text-muted">Hãy là người đầu tiên chia sẻ điều gì đó!</p>
+                    <a href="{{ url_for('create_post') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Tạo bài đăng
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<a href="{{ url_for('create_post') }}" class="floating-btn">
+    <i class="fas fa-plus"></i>
+</a>
+{% endblock %} 

@@ -1,0 +1,171 @@
+/* General Styling - Dark Mode */
+QWidget[theme="dark"] {
+    background-color: #2E2F33;
+    color: #F0F0F0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+}
+QWidget[theme="light"] {
+    background-color: #f5f6fa;
+    color: #222;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+}
+
+/* Main Window and Dialogs */
+QMainWindow[theme="dark"], QDialog[theme="dark"] {
+    background-color: #2E2F33;
+}
+QMainWindow[theme="light"], QDialog[theme="light"] {
+    background-color: #f5f6fa;
+}
+
+/* Buttons */
+QPushButton[theme="dark"] {
+    background-color: #4A4B50;
+    border: 1px solid #4A4B50;
+    border-radius: 5px;
+    padding: 8px 12px;
+    min-width: 40px;
+    color: #F0F0F0;
+}
+QPushButton[theme="light"] {
+    background-color: #e1e1e1;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    padding: 8px 12px;
+    min-width: 40px;
+    color: #222;
+}
+QPushButton:hover[theme="dark"] {
+    background-color: #5A5B60;
+    border: 1px solid #707070;
+}
+QPushButton:hover[theme="light"] {
+    background-color: #d1d1d1;
+    border: 1px solid #b1b1b1;
+}
+QPushButton:pressed[theme="dark"] {
+    background-color: #3E3F43;
+}
+QPushButton:pressed[theme="light"] {
+    background-color: #c1c1c1;
+}
+
+/* Text Inputs */
+QLineEdit[theme="dark"], QTextEdit[theme="dark"] {
+    background-color: #3E3F43;
+    border: 1px solid #5A5B60;
+    border-radius: 5px;
+    padding: 8px;
+    color: #F0F0F0;
+}
+QLineEdit[theme="light"], QTextEdit[theme="light"] {
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+    padding: 8px;
+    color: #222;
+}
+QLineEdit:focus[theme="dark"], QTextEdit:focus[theme="dark"] {
+    border: 1px solid #0078D7;
+}
+QLineEdit:focus[theme="light"], QTextEdit:focus[theme="light"] {
+    border: 1px solid #0078D7;
+}
+
+/* Labels */
+QLabel[theme="dark"] {
+    color: #F0F0F0;
+}
+QLabel[theme="light"] {
+    color: #222;
+}
+
+/* Scroll Area & Lists */
+QScrollArea[theme="dark"] {
+    border: none;
+}
+QScrollArea[theme="light"] {
+    border: none;
+}
+QScrollBar:vertical[theme="dark"] {
+    border: none;
+    background: #2E2F33;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar:vertical[theme="light"] {
+    border: none;
+    background: #f5f6fa;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical[theme="dark"] {
+    background: #4A4B50;
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical[theme="light"] {
+    background: #d1d1d1;
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::add-line:vertical[theme="dark"], QScrollBar::sub-line:vertical[theme="dark"] {
+    height: 0px;
+}
+QScrollBar::add-line:vertical[theme="light"], QScrollBar::sub-line:vertical[theme="light"] {
+    height: 0px;
+}
+QScrollBar:horizontal[theme="dark"] {
+    border: none;
+    background: #2E2F33;
+    height: 10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar:horizontal[theme="light"] {
+    border: none;
+    background: #f5f6fa;
+    height: 10px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:horizontal[theme="dark"] {
+    background: #4A4B50;
+    min-width: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal[theme="light"] {
+    background: #d1d1d1;
+    min-width: 20px;
+    border-radius: 5px;
+}
+QScrollBar::add-line:horizontal[theme="dark"], QScrollBar::sub-line:horizontal[theme="dark"] {
+    width: 0px;
+}
+QScrollBar::add-line:horizontal[theme="light"], QScrollBar::sub-line:horizontal[theme="light"] {
+    width: 0px;
+}
+
+/* Frame for horizontal lines */
+QFrame[frameShape="HLine"][theme="dark"] {
+    color: #4A4B50;
+}
+QFrame[frameShape="HLine"][theme="light"] {
+    color: #d1d1d1;
+}
+
+/* Post Widget Styling */
+#PostWidget[theme="dark"] {
+    background-color: #3E3F43;
+    border: 1px solid #4A4B50;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+#PostWidget[theme="light"] {
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 10px;
+} 

@@ -1,0 +1,83 @@
+[
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "audio",
+        "content": "C:\\Users\\huynh\\AppData\\Local\\Temp\\tmpz7lpbbpl.wav",
+        "timestamp": "2025-06-23 19:07:07",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_laugh.png",
+        "timestamp": "2025-06-23 19:15:58",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_thumbsup.png",
+        "timestamp": "2025-06-23 19:16:02",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_laugh.png",
+        "timestamp": "2025-06-23 19:16:05",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_cry.png",
+        "timestamp": "2025-06-23 19:16:08",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_cry.png",
+        "timestamp": "2025-06-23 19:21:44",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_laugh.png",
+        "timestamp": "2025-06-23 19:21:55",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "text",
+        "content": "🇧🇭",
+        "timestamp": "2025-06-23 21:32:47",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "text",
+        "content": "🆎",
+        "timestamp": "2025-06-23 21:32:54",
+        "seen": false
+    },
+    {
+        "sender": "T1con",
+        "receiver": "KunnguSigmaboy",
+        "type": "sticker",
+        "content": "data/stickers\\emoji_cry.png",
+        "timestamp": "2025-06-23 21:33:26",
+        "seen": false,
+        "reaction": "😆"
+    }
+]

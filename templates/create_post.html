@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Tạo bài đăng - Link Space{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h5 class="mb-0">Tạo bài đăng</h5>
+        <div></div>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="container-fluid p-3">
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="content" class="form-label">
+                        <i class="fas fa-edit"></i> Nội dung bài đăng
+                    </label>
+                    <textarea class="form-control" id="content" name="content" rows="5" 
+                              placeholder="Bạn đang nghĩ gì?" required></textarea>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i> Chia sẻ suy nghĩ, hình ảnh hoặc video của bạn
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="media" class="form-label">
+                        <i class="fas fa-image"></i> Thêm hình ảnh/video (tùy chọn)
+                    </label>
+                    <input type="file" class="form-control" id="media" name="media" 
+                           accept="image/*,video/*">
+                    <div class="form-text">
+                        Hỗ trợ: JPG, PNG, GIF, MP4, AVI, MOV (tối đa 10MB)
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div id="mediaPreview" class="mb-3" style="display: none;">
+                    <label class="form-label">Xem trước:</label>
+                    <div class="text-center">
+                        <img id="imagePreview" class="img-fluid rounded" style="max-height: 300px; display: none;">
+                        <video id="videoPreview" class="img-fluid rounded" controls style="max-height: 300px; display: none;">
+                            Trình duyệt không hỗ trợ video.
+                        </video>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane"></i> Đăng bài
+                    </button>
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Tips -->
+    <div class="card mt-3">
+        <div class="card-body">
+            <h6 class="card-title">
+                <i class="fas fa-lightbulb"></i> Mẹo đăng bài hay
+            </h6>
+            <ul class="list-unstyled mb-0">
+                <li><i class="fas fa-check text-success"></i> Chia sẻ những khoảnh khắc đáng nhớ</li>
+                <li><i class="fas fa-check text-success"></i> Sử dụng hashtag để tăng tương tác</li>
+                <li><i class="fas fa-check text-success"></i> Đăng bài thường xuyên để nhận điểm thưởng</li>
+                <li><i class="fas fa-check text-success"></i> Tương tác với bài đăng của người khác</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+// Preview media file
+document.getElementById('media').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('mediaPreview');
+    const imagePreview = document.getElementById('imagePreview');
+    const videoPreview = document.getElementById('videoPreview');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            if (file.type.startsWith('image/')) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                videoPreview.style.display = 'none';
+            } else if (file.type.startsWith('video/')) {
+                videoPreview.src = e.target.result;
+                videoPreview.style.display = 'block';
+                imagePreview.style.display = 'none';
+            }
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.style.display = 'none';
+    }
+});
+
+// Character counter
+document.getElementById('content').addEventListener('input', function() {
+    const maxLength = 1000;
+    const currentLength = this.value.length;
+    const remaining = maxLength - currentLength;
+    
+    if (remaining < 0) {
+        this.value = this.value.substring(0, maxLength);
+    }
+});
+</script>
+{% endblock %} 
