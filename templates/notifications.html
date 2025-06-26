@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Thông báo | Link Space{% endblock %}
+{% block content %}
+<div class="container py-3 mobile-container">
+    <h3 class="mb-3">Thông báo</h3>
+    {% if notifications %}
+    <ul class="list-group">
+        {% for n in notifications %}
+        <li class="list-group-item d-flex align-items-center">
+            <i class="fas fa-info-circle text-primary me-2"></i>
+            <div class="flex-grow-1">
+                <div>{{ n.message|safe }}</div>
+                <div class="text-muted small">{{ n.timestamp }}</div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="alert alert-info text-center">Chưa có thông báo nào.</div>
+    {% endif %}
+</div>
+{% endblock %} 

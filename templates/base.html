@@ -162,6 +162,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
             <div class="container-fluid">
             <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">Link Space</a>
+            <form class="d-flex ms-2 my-2 my-lg-0 w-100" id="userSearchForm" role="search" autocomplete="off" style="max-width:320px;" action="/users" method="get">
+                <input class="form-control me-2" type="search" placeholder="Tìm kiếm user..." aria-label="Search" id="userSearchInput" name="q" style="border-radius:20px;">
+            </form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -185,6 +188,20 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item text-danger" href="/logout">Đăng xuất</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="nav-link position-relative" href="/notifications">
+                            <i class="fas fa-bell"></i>
+                            {% set notif_count = load_user_data(session['username']).get('notifications', [])|length if session.get('username') else 0 %}
+                            {% if notif_count > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:10px;">{{ notif_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="nav-link position-relative" href="/friends">
+                            <i class="fas fa-user-friends"></i>
+                        </a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -310,5 +327,46 @@
         }
     </script>
     {% block scripts %}{% endblock %}
+    <script>
+    // Responsive tìm kiếm user
+    const userSearchInput = document.getElementById('userSearchInput');
+    const userSearchResults = document.getElementById('userSearchResults');
+    let searchTimeout = null;
+
+    userSearchInput && userSearchInput.addEventListener('input', function() {
+        const q = this.value.trim();
+        if (searchTimeout) clearTimeout(searchTimeout);
+        if (!q) {
+            userSearchResults.classList.add('d-none');
+            userSearchResults.innerHTML = '';
+            return;
+        }
+        searchTimeout = setTimeout(() => {
+            fetch(`/search_user?q=${encodeURIComponent(q)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.users.length > 0) {
+                        userSearchResults.innerHTML = data.users.map(u => `
+                            <a href="/profile/${u.username}" class="list-group-item list-group-item-action d-flex align-items-center">
+                                <img src="/static/${u.avatar}" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover;" onerror="this.src='/static/avatars/default.png'">
+                                <span class="fw-bold">${u.nickname}</span>
+                                <span class="text-muted small ms-2">@${u.username}</span>
+                            </a>
+                        `).join('');
+                        userSearchResults.classList.remove('d-none');
+                    } else {
+                        userSearchResults.innerHTML = '<div class="list-group-item text-center text-muted">Không tìm thấy user</div>';
+                        userSearchResults.classList.remove('d-none');
+                    }
+                });
+        }, 200);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!userSearchResults.contains(e.target) && e.target !== userSearchInput) {
+            userSearchResults.classList.add('d-none');
+        }
+    });
+    </script>
 </body>
 </html> 

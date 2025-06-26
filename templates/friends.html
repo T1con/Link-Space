@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Bạn bè | Link Space{% endblock %}
+{% block content %}
+<div class="container py-3 mobile-container">
+    <h3 class="mb-3">Bạn bè</h3>
+    <h5 class="mt-4">Danh sách bạn bè</h5>
+    {% if friends %}
+    <div class="row g-3">
+        {% for user in friends %}
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='avatars/' + user.username + '.png') }}" onerror="this.src='{{ url_for('static', filename='avatars/default.png') }}'" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">{{ user.nickname or user.username }}</div>
+                        <div class="text-muted small">@{{ user.username }}</div>
+                    </div>
+                    <a href="/profile/{{ user.username }}" class="btn btn-outline-primary btn-sm ms-2">Xem</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">Bạn chưa có bạn bè nào.</div>
+    {% endif %}
+
+    <h5 class="mt-4">Lời mời kết bạn</h5>
+    {% if requests %}
+    <div class="row g-3">
+        {% for user in requests %}
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='avatars/' + user.username + '.png') }}" onerror="this.src='{{ url_for('static', filename='avatars/default.png') }}'" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">{{ user.nickname or user.username }}</div>
+                        <div class="text-muted small">@{{ user.username }}</div>
+                    </div>
+                    <form method="post" action="/accept_friend/{{ user.username }}" class="d-inline">
+                        <button class="btn btn-success btn-sm">Chấp nhận</button>
+                    </form>
+                    <form method="post" action="/decline_friend/{{ user.username }}" class="d-inline ms-1">
+                        <button class="btn btn-danger btn-sm">Từ chối</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">Không có lời mời kết bạn nào.</div>
+    {% endif %}
+
+    <h5 class="mt-4">Gợi ý bạn bè</h5>
+    {% if suggestions %}
+    <div class="row g-3">
+        {% for user in suggestions %}
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='avatars/' + user.username + '.png') }}" onerror="this.src='{{ url_for('static', filename='avatars/default.png') }}'" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+                    <div class="flex-grow-1">
+                        <div class="fw-bold">{{ user.nickname or user.username }}</div>
+                        <div class="text-muted small">@{{ user.username }}</div>
+                    </div>
+                    <form method="post" action="/add_friend/{{ user.username }}" class="d-inline">
+                        <button class="btn btn-primary btn-sm">Kết bạn</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">Không có gợi ý bạn bè nào.</div>
+    {% endif %}
+</div>
+{% endblock %} 

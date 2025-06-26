@@ -485,7 +485,14 @@ def send_message():
         'conversation_key': conversation_key,
         'message': new_message
     })
-    
+
+    # Thông báo tin nhắn mới cho user nhận
+    if target_user != current_user:
+        add_notification(target_user, {
+            'type': 'message',
+            'message': f"Bạn có tin nhắn mới từ <b>@{current_user}</b> <a href='/chat/{current_user}'>Xem ngay</a>"
+        })
+
     return jsonify({'success': True, 'message': new_message})
 
 @app.route('/static/<path:filename>')
@@ -1180,6 +1187,89 @@ def api_get_user_stats():
         return jsonify({'success': True, 'stats': stats})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/search_user')
+def search_user():
+    """API tìm kiếm user theo username hoặc nickname (AJAX)"""
+    if 'username' not in session:
+        return jsonify({'success': False, 'error': 'Chưa đăng nhập'}), 401
+    
+    q = request.args.get('q', '').strip().lower()
+    if not q:
+        return jsonify({'success': True, 'users': []})
+    
+    users = load_users()
+    results = []
+    for user in users:
+        username = user.get('username', '').lower()
+        nickname = user.get('nickname', '').lower() if 'nickname' in user else ''
+        if q in username or q in nickname:
+            results.append({
+                'username': user.get('username'),
+                'nickname': user.get('nickname', user.get('username')),
+                'avatar': f"avatars/{user.get('username')}.png"
+            })
+    return jsonify({'success': True, 'users': results})
+
+@app.route('/users')
+def users():
+    """Trang tìm kiếm user nâng cao, hỗ trợ phân trang"""
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    q = request.args.get('q', '').strip().lower()
+    page = int(request.args.get('page', 1))
+    per_page = 12
+    users = load_users()
+    filtered = []
+    for user in users:
+        username = user.get('username', '').lower()
+        nickname = user.get('nickname', '').lower() if 'nickname' in user else ''
+        email = user.get('email', '').lower() if 'email' in user else ''
+        bio = user.get('bio', '').lower() if 'bio' in user else ''
+        if not q or (q in username or q in nickname or q in email or q in bio):
+            filtered.append(user)
+    total = len(filtered)
+    start = (page-1)*per_page
+    end = start+per_page
+    paged = filtered[start:end]
+    return render_template('users.html', users=paged, q=q, page=page, total=total, per_page=per_page)
+
+# Thông báo (notifications) lưu trong user_data['notifications']
+def add_notification(username, notif):
+    data = load_user_data(username)
+    if 'notifications' not in data:
+        data['notifications'] = []
+    notif['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data['notifications'].insert(0, notif)
+    save_user_data(username, data)
+
+def get_notifications(username, limit=20):
+    data = load_user_data(username)
+    return data.get('notifications', [])[:limit]
+
+@app.route('/notifications')
+def notifications():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    notifs = get_notifications(session['username'])
+    return render_template('notifications.html', notifications=notifs)
+
+@app.route('/friends')
+def friends():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    data = load_user_data(session['username'])
+    users = load_users()
+    # Danh sách bạn bè
+    friends = data.get('friends', [])
+    friends_info = [u for u in users if u['username'] in friends]
+    # Lời mời kết bạn
+    friend_requests = data.get('friend_requests', [])
+    requests_info = [u for u in users if u['username'] in friend_requests]
+    # Gợi ý bạn bè (user chưa là bạn, chưa gửi lời mời, không phải mình)
+    suggestions = [u for u in users if u['username'] != session['username'] and u['username'] not in friends and u['username'] not in friend_requests]
+    return render_template('friends.html', friends=friends_info, requests=requests_info, suggestions=suggestions)
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
