@@ -1,0 +1,38 @@
+{
+    "user1": {
+        "total_points": 32,
+        "actions": {
+            "create_topic": 2,
+            "receive_like": 4,
+            "vote": 2,
+            "join_event": 2
+        },
+        "level": 1
+    },
+    "user2": {
+        "total_points": 20,
+        "actions": {
+            "comment": 2,
+            "create_poll": 2,
+            "join_event": 2
+        },
+        "level": 1
+    },
+    "user3": {
+        "total_points": 36,
+        "actions": {
+            "comment": 2,
+            "vote": 2,
+            "create_event": 2
+        },
+        "level": 1
+    },
+    "admin": {
+        "total_points": 8,
+        "actions": {
+            "vote": 2,
+            "join_event": 2
+        },
+        "level": 1
+    }
+}

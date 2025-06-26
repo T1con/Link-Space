@@ -1,61 +1,312 @@
 {% extends "base.html" %}
+
+{% block title %}@{{ target_user }} - Link Space{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-body text-center">
-          <!-- Avatar -->
-          <img src="/static/avatars/{{ target_user }}.png" alt="Avatar" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #eee;">
-          <!-- Nickname & Username -->
-          <h2 class="mb-0">{{ user_data.nickname or target_user }}</h2>
-          <small class="text-muted">@{{ target_user }}</small>
-          <!-- Rank Special -->
-          {% if user_data.rank_special %}
-            <div class="mt-2"><span class="badge bg-warning text-dark" style="font-size: 1.1em;">{{ user_data.rank_special }}</span></div>
+<div class="container-fluid p-0">
+    <!-- Cover Image -->
+    <div class="position-relative">
+        <img src="{{ url_for('static', filename=user_data.cover|default('covers/default.jpg')) }}" 
+             alt="Cover" class="w-100" style="height: 200px; object-fit: cover;"
+             onerror="this.src='https://via.placeholder.com/800x200/667eea/ffffff?text=Cover+Image'">
+    </div>
+    
+    <!-- Profile Info -->
+    <div class="container-fluid p-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                {% if 'Chủ Nhân' in user_data.badges %}
+                                <div style="position: relative; display: inline-block;">
+                                    <!-- Vương miện SVG vàng -->
+                                    <svg width="48" height="32" viewBox="0 0 48 32" style="position:absolute;left:50%;top:-28px;transform:translateX(-50%);z-index:2;" xmlns="http://www.w3.org/2000/svg">
+                                        <polygon points="4,28 12,8 24,24 36,8 44,28" fill="#FFD700" stroke="#bfa100" stroke-width="2"/>
+                                        <circle cx="12" cy="8" r="4" fill="#fff700" stroke="#bfa100" stroke-width="2"/>
+                                        <circle cx="36" cy="8" r="4" fill="#fff700" stroke="#bfa100" stroke-width="2"/>
+                                        <circle cx="24" cy="24" r="4" fill="#fff700" stroke="#bfa100" stroke-width="2"/>
+                                    </svg>
+                                    <img src="{{ url_for('static', filename=user_data.avatar|default('avatars/default.png')) }}"
+                                         alt="Avatar"
+                                         class="mb-3 avatar-rank chu-nhan"
+                                         style="width: 120px; height: 120px; object-fit: cover;"
+                                         onerror="this.src='https://ui-avatars.com/api/?name={{ target_user }}&background=667eea&color=fff&size=120'">
+                                </div>
+                                {% else %}
+                                <img src="{{ url_for('static', filename=user_data.avatar|default('avatars/default.png')) }}"
+                                     alt="Avatar"
+                                     class="mb-3 avatar-rank {% if 'Thách Đấu' in user_data.badges %}thach-dau{% elif 'Đại Cao Thủ' in user_data.badges %}dai-cao-thu{% elif 'Huyền thoại' in user_data.badges %}huyen-thoai{% elif 'Cao thủ' in user_data.badges %}cao-thu{% elif 'Người mới' in user_data.badges %}nguoi-moi{% endif %}"
+                                     style="width: 120px; height: 120px; object-fit: cover;"
+                                     onerror="this.src='https://ui-avatars.com/api/?name={{ target_user }}&background=667eea&color=fff&size=120'">
+                                {% endif %}
+                                
+                                <!-- Hiển thị Pet đang dùng -->
+                                {% if user_data.main_pet %}
+                                <div class="mt-2">
+                                    <img src="{{ url_for('static', filename=pets_dict[user_data.main_pet].image) }}" alt="Pet" width="60" height="60" style="object-fit:contain;border-radius:50%;border:2px solid #20c997;background:#fff;">
+                                    <div class="small text-muted">Pet: {{ pets_dict[user_data.main_pet].name }}</div>
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Hiển thị Nhân vật đại diện -->
+                                {% if user_data.main_character %}
+                                <div class="mt-2">
+                                    <img src="{{ url_for('static', filename=characters_dict[user_data.main_character].image) }}" alt="Character" width="60" height="60" style="object-fit:contain;border-radius:50%;border:2px solid #fd79a8;background:#fff;">
+                                    <div class="small text-muted">Nhân vật: {{ characters_dict[user_data.main_character].name }}</div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if current_user != target_user %}
+                                <div class="mb-3">
+                                    {% set is_friend = target_user in current_user_data.get('friends', []) %}
+                                    {% set sent_request = target_user in current_user_data.get('sent_requests', []) %}
+                                    {% set received_request = target_user in current_user_data.get('friend_requests', []) %}
+                                    {% if is_friend %}
+                                        <form method="post" action="{{ url_for('remove_friend', username=target_user) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">Hủy kết bạn</button>
+                                        </form>
+                                    {% elif sent_request %}
+                                        <button class="btn btn-secondary btn-sm" disabled>Đã gửi lời mời</button>
+                                    {% elif received_request %}
+                                        <form method="post" action="{{ url_for('accept_friend', username=target_user) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm">Chấp nhận</button>
+                                        </form>
+                                        <form method="post" action="{{ url_for('decline_friend', username=target_user) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm ms-1">Từ chối</button>
+                                        </form>
+                                    {% else %}
+                                        <form method="post" action="{{ url_for('add_friend', username=target_user) }}" style="display:inline;">
+                                            <button type="submit" class="btn btn-primary btn-sm">Kết bạn</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                                {% else %}
+                                <div class="mb-3">
+                                    <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit"></i> Chỉnh sửa
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-9">
+                                <h4 class="mb-2">
+                                    {{ user_data.nickname|default(target_user) }}
+                                    {% if user_data.gender %}
+                                        <span class="badge bg-info">{{ user_data.gender }}</span>
+                                    {% endif %}
+                                </h4>
+                                <p class="text-muted mb-2">@{{ target_user }}</p>
+                                
+                                <!-- Hiển thị Rank -->
+                                {% set pts = user_data.points|default(0) %}
+                                {% if 'Chủ Nhân' in user_data.badges %}
+                                    <span class="badge bg-warning text-dark">👑 Chủ Nhân</span>
+                                {% elif 'Thách Đấu' in user_data.badges or pts >= 5000 %}
+                                    <span class="badge bg-danger">Thách Đấu</span>
+                                {% elif 'Đại Cao Thủ' in user_data.badges or pts >= 2000 %}
+                                    <span class="badge bg-purple">Đại Cao Thủ</span>
+                                {% elif 'Huyền thoại' in user_data.badges or pts >= 1000 %}
+                                    <span class="badge bg-info">Huyền thoại</span>
+                                {% elif 'Cao thủ' in user_data.badges or pts >= 500 %}
+                                    <span class="badge bg-primary">Cao thủ</span>
+                                {% elif 'Người mới' in user_data.badges or pts >= 100 %}
+                                    <span class="badge bg-secondary">Người mới</span>
+                                {% else %}
+                                    <span class="badge bg-light text-dark">Chưa có rank</span>
           {% endif %}
-          <!-- Bio -->
+                                
           {% if user_data.bio %}
-            <p class="mt-3">{{ user_data.bio }}</p>
+                                <p class="mb-3">{{ user_data.bio }}</p>
+                                {% endif %}
+                                
+                                <div class="row text-center mb-3">
+                                    <div class="col-4">
+                                        <h5 class="mb-0">{{ user_data.points|default(0) }}</h5>
+                                        <small class="text-muted">Điểm</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="mb-0">{{ user_data.level|default(1) }}</h5>
+                                        <small class="text-muted">Level</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5 class="mb-0">{{ user_data.badges|length|default(0) }}</h5>
+                                        <small class="text-muted">Huy hiệu</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <h6 class="mb-0">{{ user_data.following|length|default(0) }}</h6>
+                                        <small class="text-muted">Đang theo dõi</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6 class="mb-0">{{ user_data.followers|length|default(0) }}</h6>
+                                        <small class="text-muted">Người theo dõi</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h6 class="mb-0">{{ user_data.friends|length|default(0) }}</h6>
+                                        <small class="text-muted">Bạn bè</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Info -->
+                        {% if user_data.birthday or user_data.location or user_data.hobbies or user_data.idol %}
+                        <hr>
+                        <div class="row">
+                            {% if user_data.birthday %}
+                            <div class="col-md-6 mb-2">
+                                <i class="fas fa-birthday-cake text-primary"></i>
+                                <strong>Sinh nhật:</strong> {{ user_data.birthday }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if user_data.location %}
+                            <div class="col-md-6 mb-2">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                                <strong>Địa chỉ:</strong> {{ user_data.location }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if user_data.hobbies %}
+                            <div class="col-md-6 mb-2">
+                                <i class="fas fa-heart text-primary"></i>
+                                <strong>Sở thích:</strong> {{ user_data.hobbies }}
+                            </div>
+                            {% endif %}
+                            
+                            {% if user_data.idol %}
+                            <div class="col-md-6 mb-2">
+                                <i class="fas fa-star text-primary"></i>
+                                <strong>Thần tượng:</strong> {{ user_data.idol }}
+                            </div>
+                            {% endif %}
+                        </div>
           {% endif %}
+                        
           <!-- Badges -->
           {% if user_data.badges %}
-            <div class="mb-2">
+                        <hr>
+                        <div>
+                            <strong><i class="fas fa-award"></i> Huy hiệu:</strong>
               {% for badge in user_data.badges %}
-                <span class="badge bg-primary me-1">{{ badge }}</span>
+                            <span class="badge bg-warning text-dark me-1">{{ badge }}</span>
               {% endfor %}
             </div>
           {% endif %}
-          <!-- Level & Points -->
-          <div class="mb-2">
-            <span class="badge bg-success">Level: {{ user_data.level }}</span>
-            <span class="badge bg-info text-dark">Points: {{ user_data.points }}</span>
+          <!-- Hiển thị danh sách Pet mà user sở hữu -->
+          {% if user_data.pets %}
+          <hr>
+          <div>
+              <strong><i class="fas fa-paw"></i> Pet đang sở hữu:</strong>
+              <div class="d-flex flex-wrap mt-2">
+                  {% for pet_id in user_data.pets %}
+                      <div class="me-3 mb-2 text-center">
+                          <img src="{{ url_for('static', filename=pets_dict[pet_id].image) }}" alt="{{ pets_dict[pet_id].name }}" width="48" height="48" style="object-fit:contain;border-radius:12px;border:2px solid #20c997;background:#fff;">
+                          <div class="small">{{ pets_dict[pet_id].name }}</div>
+                      </div>
+                  {% endfor %}
+              </div>
           </div>
-          <!-- Thông tin khác -->
-          <div class="row mt-3 text-start">
-            <div class="col-md-6">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Giới tính:</b> {{ user_data.gender or 'Chưa cập nhật' }}</li>
-                <li class="list-group-item"><b>Ngày sinh:</b> {{ user_data.birthday or 'Chưa cập nhật' }}</li>
-                <li class="list-group-item"><b>Địa chỉ:</b> {{ user_data.location or 'Chưa cập nhật' }}</li>
-                <li class="list-group-item"><b>Hobbies:</b> {{ user_data.hobbies or 'Chưa cập nhật' }}</li>
-                <li class="list-group-item"><b>Idol:</b> {{ user_data.idol or 'Chưa cập nhật' }}</li>
-                <li class="list-group-item"><b>Theme:</b> {{ user_data.theme or 'Chưa cập nhật' }}</li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Pet chính:</b> {{ user_data.main_pet or 'Chưa có' }}</li>
-                <li class="list-group-item"><b>Pet sở hữu:</b> {{ user_data.pets|length }} loại</li>
-                <li class="list-group-item"><b>Bạn bè:</b> {{ user_data.friends|length }}</li>
-                <li class="list-group-item"><b>Đang theo dõi:</b> {{ user_data.following|length }}</li>
-                <li class="list-group-item"><b>Yêu thích:</b> {{ user_data.favorites|length }}</li>
-              </ul>
-            </div>
+          {% endif %}
+          <!-- Hiển thị danh sách Nhân vật mà user sở hữu -->
+          {% if user_data.characters %}
+          <hr>
+          <div>
+              <strong><i class="fas fa-user"></i> Nhân vật đang sở hữu:</strong>
+              <div class="d-flex flex-wrap mt-2">
+                  {% for char_id in user_data.characters %}
+                      <div class="me-3 mb-2 text-center">
+                          {% set border_color = '#fd79a8' %}
+                          {% if char_id == 'char_pm' or char_id == 'char_tv' %}
+                              {% set border_color = '#e84393' %}
+                          {% endif %}
+                          <img src="{{ url_for('static', filename=characters_dict[char_id].image) }}" alt="{{ characters_dict[char_id].name }}" width="48" height="48" style="object-fit:contain;border-radius:12px;border:2px solid {{ border_color }};background:#fff;">
+                          <div class="small">{{ characters_dict[char_id].name }}</div>
+                          {% if current_user == target_user %}
+                              {% if user_data.main_character == char_id %}
+                                  <button class="btn btn-success btn-sm mt-1" disabled>Đang dùng</button>
+                              {% else %}
+                                  <form method="post" action="{{ url_for('profile', username=target_user) }}">
+                                      <input type="hidden" name="set_main_character" value="{{ char_id }}">
+                                      <button type="submit" class="btn btn-outline-primary btn-sm mt-1">Chọn làm đại diện</button>
+                                  </form>
+                              {% endif %}
+                          {% endif %}
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          {% endif %}
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+.avatar-rank {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid #b2bec3;
+    box-shadow: 0 0 0 0 rgba(0,0,0,0.2);
+    transition: box-shadow 0.3s;
+}
+.avatar-rank.chu-nhan {
+    border-color: #FFD700;
+    box-shadow: 0 0 24px 6px #FFD700, 0 0 48px 12px #fff70080;
+    animation: glow-gold 2s infinite alternate;
+}
+@keyframes glow-gold {
+    0% { box-shadow: 0 0 24px 6px #FFD700, 0 0 48px 12px #fff70080; }
+    100% { box-shadow: 0 0 36px 12px #FFD700, 0 0 64px 24px #fff700cc; }
+}
+.avatar-rank.thach-dau {
+    border-color: #e84118;
+    box-shadow: 0 0 18px 4px #e84118, 0 0 32px 8px #e8411880;
+    animation: glow-red 2s infinite alternate;
+}
+@keyframes glow-red {
+    0% { box-shadow: 0 0 18px 4px #e84118, 0 0 32px 8px #e8411880; }
+    100% { box-shadow: 0 0 32px 12px #e84118, 0 0 48px 24px #e84118cc; }
+}
+.avatar-rank.dai-cao-thu {
+    border-color: #a259f7;
+    box-shadow: 0 0 18px 4px #a259f7, 0 0 32px 8px #a259f780;
+    animation: glow-purple 2s infinite alternate;
+}
+@keyframes glow-purple {
+    0% { box-shadow: 0 0 18px 4px #a259f7, 0 0 32px 8px #a259f780; }
+    100% { box-shadow: 0 0 32px 12px #a259f7, 0 0 48px 24px #a259f7cc; }
+}
+.avatar-rank.huyen-thoai {
+    border-color: #00b894;
+    box-shadow: 0 0 12px 2px #00b894, 0 0 24px 6px #00b89480;
+    animation: glow-green 2s infinite alternate;
+}
+@keyframes glow-green {
+    0% { box-shadow: 0 0 12px 2px #00b894, 0 0 24px 6px #00b89480; }
+    100% { box-shadow: 0 0 24px 8px #00b894, 0 0 36px 16px #00b894cc; }
+}
+.avatar-rank.cao-thu {
+    border-color: #0984e3;
+    box-shadow: 0 0 8px 2px #0984e3, 0 0 16px 4px #0984e380;
+    animation: glow-blue 2s infinite alternate;
+}
+@keyframes glow-blue {
+    0% { box-shadow: 0 0 8px 2px #0984e3, 0 0 16px 4px #0984e380; }
+    100% { box-shadow: 0 0 16px 6px #0984e3, 0 0 24px 12px #0984e3cc; }
+}
+.avatar-rank.nguoi-moi {
+    border-color: #636e72;
+    box-shadow: 0 0 4px 1px #636e72;
+}
+</style>
 {% endblock %} 

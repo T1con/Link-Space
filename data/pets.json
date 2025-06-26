@@ -1,15 +1,15 @@
 [
-  {"id": "cat", "name": "Mèo dễ thương", "image": "data/pets/cat.png", "price": 200},
-  {"id": "dog", "name": "Chó trung thành", "image": "data/pets/dog.png", "price": 300},
-  {"id": "dragon", "name": "Rồng huyền thoại", "image": "data/pets/dragon.png", "price": 1000},
-  {"id": "rabbit", "name": "Thỏ ngọc", "image": "data/pets/rabbit.png", "price": 250},
-  {"id": "hamster", "name": "Chuột Hamster", "image": "data/pets/hamster.png", "price": 180},
-  {"id": "parrot", "name": "Vẹt thông minh", "image": "data/pets/parrot.png", "price": 350},
-  {"id": "turtle", "name": "Rùa may mắn", "image": "data/pets/turtle.png", "price": 220},
-  {"id": "penguin", "name": "Cánh cụt vui nhộn", "image": "data/pets/penguin.png", "price": 400},
-  {"id": "unicorn", "name": "Kỳ lân mộng mơ", "image": "data/pets/unicorn.png", "price": 1200},
-  {"id": "panda", "name": "Gấu trúc đáng yêu", "image": "data/pets/panda.png", "price": 500},
-  {"id": "fox", "name": "Cáo tinh ranh", "image": "data/pets/fox.png", "price": 320},
-  {"id": "dolphin", "name": "Cá heo thân thiện", "image": "data/pets/dolphin.png", "price": 600},
-  {"id": "owl", "name": "Cú thông thái", "image": "data/pets/owl.png", "price": 270}
+  {"id": "cat", "name": "Mèo dễ thương", "image": "pets/cat.png", "price": 200},
+  {"id": "dog", "name": "Chó trung thành", "image": "pets/dog.png", "price": 300},
+  {"id": "dragon", "name": "Rồng huyền thoại", "image": "pets/dragon.png", "price": 1000},
+  {"id": "rabbit", "name": "Thỏ ngọc", "image": "pets/rabbit.png", "price": 250},
+  {"id": "hamster", "name": "Chuột Hamster", "image": "pets/hamster.png", "price": 180},
+  {"id": "parrot", "name": "Vẹt thông minh", "image": "pets/parrot.png", "price": 350},
+  {"id": "turtle", "name": "Rùa may mắn", "image": "pets/turtle.png", "price": 220},
+  {"id": "penguin", "name": "Cánh cụt vui nhộn", "image": "pets/penguin.png", "price": 400},
+  {"id": "unicorn", "name": "Kỳ lân mộng mơ", "image": "pets/unicorn.png", "price": 1200},
+  {"id": "panda", "name": "Gấu trúc đáng yêu", "image": "pets/panda.png", "price": 500},
+  {"id": "fox", "name": "Cáo tinh ranh", "image": "pets/fox.png", "price": 320},
+  {"id": "dolphin", "name": "Cá heo thân thiện", "image": "pets/dolphin.png", "price": 600},
+  {"id": "owl", "name": "Cú thông thái", "image": "pets/owl.png", "price": 270}
 ] 

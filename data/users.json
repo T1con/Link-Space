@@ -2,7 +2,7 @@
     {
         "id": "644f55c9-2e5a-4c61-8fbb-385b6a3f6f0b",
         "username": "admin",
-        "password": "1",
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf",
         "friends": [
             "T1con"
         ],
@@ -13,7 +13,7 @@
     {
         "id": "6ad68ec8-37cc-4b16-8126-0b2231763a51",
         "username": "vinh",
-        "password": "1",
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf",
         "friends": [
             "T1con"
         ]
@@ -21,12 +21,11 @@
     {
         "id": "d21b3aa9-93b6-4e89-9e40-eca3536f239d",
         "username": "test",
-        "password": "1"
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf"
     },
     {
         "id": "93a1a681-97af-4620-9965-f25aba9f261a",
         "username": "T1con",
-        "password": "12345654321",
         "friends": [
             "admin",
             "vinh"
@@ -34,12 +33,13 @@
         "following": [
             "admin",
             "vinh"
-        ]
+        ],
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf"
     },
     {
         "id": "66fc2a32-745c-4f7f-883b-7c006ef7aaef",
         "username": "Kunngu123",
-        "password": "kunsigmaboy",
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf",
         "friends": [
             "T1con"
         ],
@@ -50,12 +50,142 @@
     {
         "id": "351287a7-8685-4c4f-aa16-3a4d0348ea36",
         "username": "KunnguSigmaboy",
-        "password": "1",
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf",
         "birthday": "5/10/2015"
     },
     {
         "id": "78f7aef3-1a45-4a55-8498-856629bd5ac3",
         "username": "Vinhtest",
-        "password": "vinhdeptrai123"
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf"
+    },
+    {
+        "id": "85f72828-d36e-4db8-825c-58c7357886d4",
+        "username": "Hanna",
+        "password_hash": "scrypt:32768:8:1$9osfgWM4vwYlf0in$d22bc2399b3546e134ca980ac24af74f39101eac58dd3ea4ce6fd03119b2786d3a05b4823d8b10b3bff721690d2a3685ed1600c6f66e5d20031d41dc9b4b67bf"
+    },
+    {
+        "id": "2a332da11b4b4624",
+        "username": "test_auto",
+        "password_hash": "pbkdf2:sha256:600000$J7onb9lQasii8Ucf$b0b02d6bd9a1ab6c0a5bcca41ec24c28d6a5ed52164b4e37eba041cfacaa216f"
+    },
+    {
+        "id": "c9d43d16-0e5d-4d7b-bae3-33d0fb844965",
+        "username": "test_api_8r5w18",
+        "password_hash": "scrypt:32768:8:1$JMbwD6SHtUzXSHar$bfdcde245fc523f80fa9daa39888a0c61109ba554706f6090d590a65b227655407aae21121dadc3a23fb99c9f0e974a92a00f53571d62c8e1b844e8685545133"
+    },
+    {
+        "id": "2f4c29f5-a3f5-4ebe-a15b-fb0642844d8d",
+        "username": "test_api_552424",
+        "password_hash": "scrypt:32768:8:1$xl7FvGkaZY0R8ytP$1fa265aab0c54526b3ad1c470be81de57b859f0ef59be0e4769be570c13dbda8adb6a7dcbfa8cdb5bf3406bcd3db6bc8baab5f72aec25a4997b8021eb923ce36"
+    },
+    {
+        "id": "154437ac-8aab-4ae1-a713-1a014781b422",
+        "username": "test_api_je4btp",
+        "password_hash": "pbkdf2:sha256:600000$ECorR5XnRiryUywr$c51fae77f24de1d1ddc67ebcfc0ae94be2229aaface1eb1d8e81f2b2a99ad981"
+    },
+    {
+        "id": "42b6f1ea-1ab0-4343-9a93-786c4e24c8f2",
+        "username": "test_api_gv9q1v",
+        "password_hash": "pbkdf2:sha256:600000$UIbSapFQ6G9fMXwA$00dab7462fad5ac5153b31eeae64f253022826c389b7945bbf6f3830cdd6d004"
+    },
+    {
+        "id": "3fde142b-891e-42f6-a3a4-2096e6687271",
+        "username": "test_api_mbsjxv",
+        "password_hash": "pbkdf2:sha256:600000$NCM3O76mZw195KW1$9a55adc94667cf139bbd6ebdc07664142251ced1981547eb3e768165a5e4fdcf"
+    },
+    {
+        "id": "cf319404-d972-44d5-a074-86cbf7d624d1",
+        "username": "test_api_c24oge",
+        "password_hash": "pbkdf2:sha256:600000$enaoPh0A8UEpLp80$7e501ccf5c7f49fa65e0721f1fb029ae551d9c41a3ec6c4eefd0dc34b7677808"
+    },
+    {
+        "id": "2c7495c4-11bb-499f-84ea-9677045408d9",
+        "username": "test_api_zaqtlf",
+        "password_hash": "pbkdf2:sha256:600000$xo1qiflPU37UPzLh$13fa9c64e85047ce35a1acc88a18e99f256f12af15277dc292aa73ef40a2aa4e"
+    },
+    {
+        "id": "7222050f-fd9c-4e24-b15c-16dd3a931c72",
+        "username": "test_api_rfqggh",
+        "password_hash": "pbkdf2:sha256:600000$lvzLhvxh1B8vlVFj$8a21d9d624e2218ad275fcf92dcffd7618caf3f22287511d32ddc6483d27e6bb"
+    },
+    {
+        "id": "93f68d77-54d4-425a-af91-a4136e34b382",
+        "username": "test_api_ynzj9d",
+        "password_hash": "pbkdf2:sha256:600000$jAVKyM3gBGuA51ov$d780c1d5e0d74e2da1fff38f067b0793fa7ed9efa5eb25417229de9b53f2d2f6"
+    },
+    {
+        "id": "1ee44218-2fd0-420a-903f-37acb9f2add7",
+        "username": "test_api_gj8man",
+        "password_hash": "pbkdf2:sha256:600000$AbPo4e0Vcks6q9Lw$3dcfafd10dd48c60c775802560f6d224ab491c2a426613eb856640c68c0adc67"
+    },
+    {
+        "id": "958dabd0-be61-4238-ba26-35ebfda08d89",
+        "username": "test_api_0b5v96",
+        "password_hash": "pbkdf2:sha256:600000$ayhzoYRh5qYQ6CAB$53a8a9be3fab1d0ba743712503d511e0ca37e27b57481000426e07cec416df26"
+    },
+    {
+        "id": "8e451b57-ac29-4206-9cd6-b48298ec4b2a",
+        "username": "test_api_awmn1y",
+        "password_hash": "pbkdf2:sha256:600000$1yMRFMokeCP6Biiu$63b390aadf49af934b578bb1227d1cb91ab044d536f139306625e6c461446183"
+    },
+    {
+        "id": "18d25199-fc62-40d7-a0d9-bde998acfd4b",
+        "username": "test_api_9rtl05",
+        "password_hash": "pbkdf2:sha256:600000$8VPI7RbKJ3OAdBfR$4ed47c8df318695c27d4d244caa1caab283ff6bc6c220ffba9203ffa4ed5d93a"
+    },
+    {
+        "id": "fe35b80f-194e-4bfc-adb4-76545e4c3e4c",
+        "username": "test_api_an15o1",
+        "password_hash": "pbkdf2:sha256:600000$zK1NAitQasAAy9AV$9e1c04783f510b738e5d1b8337957c217c6abef6b0921dcb4f79d16bb286db06"
+    },
+    {
+        "id": "9238b519-9ff0-4aec-9984-9eacb5633f56",
+        "username": "test_api_2wz7c9",
+        "password_hash": "pbkdf2:sha256:600000$h31zfLXRAntqEsgX$72acca55b7abd37af5fbf59c05a3404c047f95244dde84efaab15ba50a7c23ae"
+    },
+    {
+        "id": "c2b15d23-5ac4-4e43-9ee2-6ee313d6a1aa",
+        "username": "test_api_eqlo18",
+        "password_hash": "pbkdf2:sha256:600000$5OvGbHX5uAF1KV5U$48d3b27eff6204c74641b69370eb76da20a2cf86b86efa77893e3bdeeb603670"
+    },
+    {
+        "id": "686e7b55-60d0-4e78-9251-888549960c9e",
+        "username": "test_api_098tcj",
+        "password_hash": "scrypt:32768:8:1$oBhHHxW9YndWPbC7$a7f8c5b61814dfd006505c045b30dfba18449348957413af2a9e3ab051ed50f7a0a7cc0f29545ae4024dcce17610fe8d993285c5c8dba2ae1fd7033539ce5b0c"
+    },
+    {
+        "id": "889bf521-d4a7-4e36-8762-c7be76b65945",
+        "username": "test_api_xc4pgt",
+        "password_hash": "scrypt:32768:8:1$DVnBPzlSM3bRX4M1$90da98e5ac07cfb83e654a218da0c9c3b97faa6aebaa2cb55b68098188fa309aa5fca344adb28b1fea03aa4c886746ab411ba027a13b5e99278527d0a77f0758"
+    },
+    {
+        "id": "baca695d-71c1-4192-8552-ce88f3d0d106",
+        "username": "test_api_lcn37l",
+        "password_hash": "scrypt:32768:8:1$psuOHxrSh4OdEQpC$8006de65e5d0ddbc7c931e50a2496abddf6831b6ea1d938924ad553824605d43c7533772a9eaa375ceb802173acfa6d182aa57afb7e4a7d4237a56e6e05947b9"
+    },
+    {
+        "id": "45aea776-2776-4131-8da7-2b9e13a23d24",
+        "username": "test_api_kkbb22",
+        "password_hash": "scrypt:32768:8:1$m5RjAJFE6d1FMzgh$d8fdd465466d80140436b30dcc5021a3c162d31bcc80de982ea9b34667a01a8c390240802893d6998db69fa185420b49efa3918fde4619d3377257d6e32bb40a"
+    },
+    {
+        "id": "ffedaf02-d6df-439a-9018-ed42f1cbf36f",
+        "username": "test_api_1n1xnp",
+        "password_hash": "scrypt:32768:8:1$ursNjvTuPNG9nVB2$592c0205120251a736bf375ad0f15422038fd2296f28df67c60278743b1bfe84a4ac97affc8c24d3a7c970b30e5e38ac218cb7d45c82c3c77d70b003e2a95c04"
+    },
+    {
+        "id": "5fc36ec3-b6ec-4903-9357-15db03b1112f",
+        "username": "test_api_wq0pz5",
+        "password_hash": "scrypt:32768:8:1$2L0wNRc9CrsbpWBN$fa0475eab698d2d5128279fe5a3f4d1cfefe1e523edcd98a5bb89996714f868047e4ffb7567119cbe7c2bb95ecc237ee9b6c6339e0d5752077c626ee1f129de5"
+    },
+    {
+        "id": "b37d5cd7-a0ef-4360-be54-4d31f4384d0f",
+        "username": "test_api_bivmzm",
+        "password_hash": "scrypt:32768:8:1$yfK4GUpwuJ7ymFRw$e12025174fcf4106a493cef8ae0f28091eb694d193a4b8892e18b5e44a0c23baceeba4fddfad900972b5bd4c1d6f26e5db27ad75c20efa7b5fddf33ab558b651"
+    },
+    {
+        "id": "336b153c-d552-47eb-b6fe-0f7b38c5c1f3",
+        "username": "test_api_tzhnjh",
+        "password_hash": "scrypt:32768:8:1$SIOPYsYt4jJzbs57$b31f889219c0f93ddc270589b2ac44822acd290c19836e01108685b57d2625bb0a42b26acb403cc2ea275215780a1f611e12e3cc1aeecdee08e439cd6fa112b6"
     }
 ]

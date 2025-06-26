@@ -1,0 +1,86 @@
+[
+    {
+        "test": "Tạo cộng đồng mới",
+        "success": true,
+        "message": "ID: a5907ce2",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Cập nhật thông tin",
+        "success": true,
+        "message": "Thông tin đã được cập nhật",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Upload avatar",
+        "success": true,
+        "message": "Avatar: test_community_a5907ce2_avatar_20250626_113247.jpg",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Upload ảnh bìa",
+        "success": true,
+        "message": "Cover: test_community_a5907ce2_cover_20250626_113247.jpg",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Test quyền",
+        "success": true,
+        "message": "Admin: True, Member: True, Not Admin: True, Not Member: True",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Tính toàn vẹn dữ liệu",
+        "success": false,
+        "message": "Thiếu field: avatar",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Xử lý lỗi - Avatar ID không tồn tại",
+        "success": true,
+        "message": "Đúng hành vi",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Xử lý lỗi - Cover ID không tồn tại",
+        "success": true,
+        "message": "Đúng hành vi",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Xử lý lỗi - Info ID không tồn tại",
+        "success": true,
+        "message": "Đúng hành vi",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Template templates/communities.html",
+        "success": true,
+        "message": "File tồn tại",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Template templates/edit_community.html",
+        "success": true,
+        "message": "File tồn tại",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Route /community/<community_id>/upload_avatar",
+        "success": true,
+        "message": "Route tồn tại",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Route /community/<community_id>/upload_cover",
+        "success": true,
+        "message": "Route tồn tại",
+        "timestamp": "2025-06-26 11:32:47"
+    },
+    {
+        "test": "Route /community/<community_id>/edit",
+        "success": true,
+        "message": "Route tồn tại",
+        "timestamp": "2025-06-26 11:32:47"
+    }
+]

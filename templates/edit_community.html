@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block title %}Chỉnh sửa cộng đồng | Link Space{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Chỉnh sửa cộng đồng: {{ community.name }}</h2>
+            
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            {% if success %}
+                <div class="alert alert-success">{{ success }}</div>
+            {% endif %}
+            
+            <div class="row">
+                <!-- Thông tin cộng đồng -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Thông tin cộng đồng</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Tên cộng đồng</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ community.name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Mô tả</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3">{{ community.description }}</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Cập nhật thông tin</button>
+                                <a href="{{ url_for('communities') }}" class="btn btn-secondary">Quay lại</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Avatar và ảnh bìa -->
+                <div class="col-md-4">
+                    <!-- Avatar -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0">Avatar cộng đồng</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                {% if community.avatar %}
+                                    <img src="{{ url_for('uploaded_files', filename=community.avatar) }}" 
+                                         alt="Avatar" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                         style="width: 100px; height: 100px;">
+                                        <i class="fas fa-users fa-2x text-white"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <form id="avatarForm" enctype="multipart/form-data">
+                                <div class="mb-2">
+                                    <input type="file" class="form-control" id="avatarFile" name="avatar" accept="image/*">
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary">Upload Avatar</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Ảnh bìa -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Ảnh bìa cộng đồng</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                {% if community.cover %}
+                                    <img src="{{ url_for('uploaded_files', filename=community.cover) }}" 
+                                         alt="Cover" class="img-fluid rounded" style="width: 100%; height: 120px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center" 
+                                         style="width: 100%; height: 120px;">
+                                        <i class="fas fa-image fa-2x text-white"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <form id="coverForm" enctype="multipart/form-data">
+                                <div class="mb-2">
+                                    <input type="file" class="form-control" id="coverFile" name="cover" accept="image/*">
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary">Upload Ảnh bìa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('avatarForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    const fileInput = document.getElementById('avatarFile');
+    
+    if (fileInput.files.length === 0) {
+        alert('Vui lòng chọn file ảnh!');
+        return;
+    }
+    
+    formData.append('avatar', fileInput.files[0]);
+    
+    fetch('/community/{{ community.id }}/upload_avatar', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi upload!');
+    });
+});
+
+document.getElementById('coverForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData();
+    const fileInput = document.getElementById('coverFile');
+    
+    if (fileInput.files.length === 0) {
+        alert('Vui lòng chọn file ảnh!');
+        return;
+    }
+    
+    formData.append('cover', fileInput.files[0]);
+    
+    fetch('/community/{{ community.id }}/upload_cover', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert('Lỗi: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi upload!');
+    });
+});
+</script>
+{% endblock %} 

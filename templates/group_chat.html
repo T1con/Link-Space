@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Nhóm: {{ group.name }} | Link Space{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Nhóm: {{ group.name }}</h5>
+                    <small>Thành viên: {{ group.members|join(', ') }}</small>
+                </div>
+                <div class="card-body" style="min-height: 350px; max-height: 500px; overflow-y: auto;">
+                    {% if messages %}
+                        {% for msg in messages %}
+                        <div class="mb-3 d-flex {% if msg.sender == session.username %}justify-content-end{% else %}justify-content-start{% endif %}">
+                            <div class="p-2 rounded {% if msg.sender == session.username %}bg-primary text-white{% else %}bg-light border{% endif %}" style="max-width: 70%;">
+                                <b>@{{ msg.sender }}</b><br>
+                                {{ msg.content }}<br>
+                                <span class="text-muted small">{{ msg.timestamp }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info text-center">Chưa có tin nhắn nào trong nhóm.</div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    <form method="POST" class="d-flex align-items-center">
+                        <input type="text" name="message" class="form-control me-2" placeholder="Nhập tin nhắn..." maxlength="500" required>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

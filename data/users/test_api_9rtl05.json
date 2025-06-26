@@ -1,0 +1,29 @@
+{
+    "points": 5000,
+    "level": 1,
+    "badges": [
+        "Người mới"
+    ],
+    "friends": [],
+    "following": [],
+    "followers": [],
+    "friend_requests": [],
+    "nickname": "test_api_9rtl05",
+    "bio": "",
+    "birthday": "",
+    "hobbies": "",
+    "location": "",
+    "idol": "",
+    "gender": "",
+    "pets": [
+        "cat",
+        "dog",
+        "dragon"
+    ],
+    "main_pet": "cat",
+    "characters": [
+        "char_m_01",
+        "char_f_01"
+    ],
+    "main_character": "char_m_01"
+}

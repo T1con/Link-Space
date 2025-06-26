@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+import werkzeug.security
 
 from RegisterWindow import RegisterWindow
 from MainWindow import MainWindow
@@ -80,7 +81,7 @@ class LoginWindow(QWidget):
             users = []
 
         for user in users:
-            if user["username"] == username and user["password"] == password:
+            if user["username"] == username and "password_hash" in user and werkzeug.security.check_password_hash(user["password_hash"], password):
                 QMessageBox.information(self, "Đăng nhập thành công", f"Chào mừng {username}!")
                 self.main_window = MainWindow(current_id=user["id"], current_user=username)
                 self.main_window.show()

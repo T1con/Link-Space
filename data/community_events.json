@@ -1,0 +1,38 @@
+[
+    {
+        "id": "c2b4c4d5",
+        "community_id": "demo_comm_001",
+        "title": "Gặp gỡ game thủ",
+        "description": "Buổi gặp gỡ offline để chơi game và giao lưu với các game thủ trong cộng đồng",
+        "location": "Quán cà phê Game Zone, 123 Đường ABC, TP.HCM",
+        "event_date": "2024-12-25 19:00:00",
+        "author": "user3",
+        "created_at": "2025-06-26 10:14:17",
+        "participants": [
+            "user3",
+            "user1",
+            "user2",
+            "admin"
+        ],
+        "max_participants": 20,
+        "status": "upcoming"
+    },
+    {
+        "id": "bfbc5be2",
+        "community_id": "demo_comm_001",
+        "title": "Gặp gỡ game thủ",
+        "description": "Buổi gặp gỡ offline để chơi game và giao lưu với các game thủ trong cộng đồng",
+        "location": "Quán cà phê Game Zone, 123 Đường ABC, TP.HCM",
+        "event_date": "2024-12-25 19:00:00",
+        "author": "user3",
+        "created_at": "2025-06-26 11:27:07",
+        "participants": [
+            "user3",
+            "user1",
+            "user2",
+            "admin"
+        ],
+        "max_participants": 20,
+        "status": "upcoming"
+    }
+]

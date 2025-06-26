@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Chỉnh sửa hồ sơ - Link Space{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-edit"></i> Chỉnh sửa hồ sơ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        <!-- Avatar & Cover Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="fas fa-user-circle"></i> Ảnh đại diện
+                                </label>
+                                <div class="text-center mb-2">
+                                    <img id="avatarPreview" src="{{ url_for('static', filename=user_data.avatar|default('avatars/default.png')) }}" 
+                                         alt="Avatar" class="rounded-circle" 
+                                         style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #667eea;"
+                                         onerror="this.src='https://ui-avatars.com/api/?name={{ session.username }}&background=667eea&color=fff&size=100'">
+                                </div>
+                                <input type="file" class="form-control" id="avatar" name="avatar" 
+                                       accept="image/*" onchange="previewImage(this, 'avatarPreview')">
+                                <div class="form-text">Chọn ảnh đại diện (JPG, PNG, GIF)</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="fas fa-image"></i> Ảnh bìa
+                                </label>
+                                <div class="text-center mb-2">
+                                    <img id="coverPreview" src="{{ url_for('static', filename=user_data.cover|default('covers/default.jpg')) }}" 
+                                         alt="Cover" class="rounded" 
+                                         style="width: 100%; height: 100px; object-fit: cover; border: 2px solid #dee2e6;"
+                                         onerror="this.src='https://via.placeholder.com/300x100/667eea/ffffff?text=Cover+Image'">
+                                </div>
+                                <input type="file" class="form-control" id="cover" name="cover" 
+                                       accept="image/*" onchange="previewImage(this, 'coverPreview')">
+                                <div class="form-text">Chọn ảnh bìa (JPG, PNG, GIF)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nickname" class="form-label">
+                                    <i class="fas fa-user"></i> Biệt danh
+                                </label>
+                                <input type="text" class="form-control" id="nickname" name="nickname" 
+                                       value="{{ user_data.nickname|default('') }}" placeholder="Nhập biệt danh">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="gender" class="form-label">
+                                    <i class="fas fa-venus-mars"></i> Giới tính
+                                </label>
+                                <select class="form-control" id="gender" name="gender">
+                                    <option value="">Chọn giới tính</option>
+                                    <option value="Nam" {% if user_data.gender == 'Nam' %}selected{% endif %}>Nam</option>
+                                    <option value="Nữ" {% if user_data.gender == 'Nữ' %}selected{% endif %}>Nữ</option>
+                                    <option value="Khác" {% if user_data.gender == 'Khác' %}selected{% endif %}>Khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">
+                                <i class="fas fa-quote-left"></i> Giới thiệu
+                            </label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3" 
+                                      placeholder="Giới thiệu về bản thân">{{ user_data.bio|default('') }}</textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="birthday" class="form-label">
+                                    <i class="fas fa-birthday-cake"></i> Ngày sinh
+                                </label>
+                                <input type="date" class="form-control" id="birthday" name="birthday" 
+                                       value="{{ user_data.birthday|default('') }}">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="location" class="form-label">
+                                    <i class="fas fa-map-marker-alt"></i> Địa chỉ
+                                </label>
+                                <input type="text" class="form-control" id="location" name="location" 
+                                       value="{{ user_data.location|default('') }}" placeholder="Nhập địa chỉ">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="hobbies" class="form-label">
+                                    <i class="fas fa-heart"></i> Sở thích
+                                </label>
+                                <input type="text" class="form-control" id="hobbies" name="hobbies" 
+                                       value="{{ user_data.hobbies|default('') }}" placeholder="Nhập sở thích">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="idol" class="form-label">
+                                    <i class="fas fa-star"></i> Thần tượng
+                                </label>
+                                <input type="text" class="form-control" id="idol" name="idol" 
+                                       value="{{ user_data.idol|default('') }}" placeholder="Nhập thần tượng">
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('profile', username=session.username) }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %} 

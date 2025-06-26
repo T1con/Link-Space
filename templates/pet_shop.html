@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Cửa hàng Pet | Link Space{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Cửa hàng Pet</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    <div class="mb-3"><b>Điểm hiện tại:</b> {{ user_data.points|default(0) }}</div>
+    <div class="row">
+        {% for pet in pets %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename=pet.image) }}" class="card-img-top" alt="{{ pet.name }}" style="height:120px;object-fit:contain;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pet.name }}</h5>
+                    <p class="card-text">Giá: <b>{{ pet.price }}</b> điểm</p>
+                    {% if pet.id in user_data.pets %}
+                        {% if user_data.main_pet == pet.id %}
+                            <button class="btn btn-success w-100" disabled>Đang dùng</button>
+                        {% else %}
+                            <a href="?main={{ pet.id }}" class="btn btn-outline-success w-100">Chọn làm pet chính</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="?buy={{ pet.id }}" class="btn btn-primary w-100">Mua pet</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">Chưa có pet nào.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

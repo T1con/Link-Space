@@ -50,14 +50,6 @@ Tìm dòng "IPv4 Address" (ví dụ: 192.168.1.100)
 3. Truy cập: `http://[IP_MÁY_TÍNH]:5000`
    - Ví dụ: `http://192.168.1.100:5000`
 
-## 👤 Tài khoản mẫu
-
-| Username | Password | Mô tả |
-|----------|----------|-------|
-| `T1con` | `12345654321` | Tài khoản đặc biệt |
-| `admin` | `1` | Quản trị viên |
-| `vinh` | `1` | User thường |
-| `test` | `1` | Tài khoản test |
 
 ## 🎨 Giao diện
 

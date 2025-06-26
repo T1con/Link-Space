@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Bảng xếp hạng | Link Space{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 text-center">🏆 Bảng xếp hạng người dùng</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Avatar</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Điểm</th>
+                    <th scope="col">Cấp bậc</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users[:20] %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>
+                        <img src="{{ url_for('static', filename=user.avatar|default('avatars/default.png')) }}" alt="avatar" class="rounded-circle" width="48" height="48" style="object-fit:cover;border:3px solid #667eea;" onerror="this.src='{{ url_for('static', filename='avatars/default.png') }}'">
+                    </td>
+                    <td>
+                        <a href="{{ url_for('profile', username=user.username) }}" class="fw-bold text-decoration-none">@{{ user.nickname|default(user.username) }}</a>
+                    </td>
+                    <td><span class="fw-bold text-primary">{{ user.points|default(0) }}</span></td>
+                    <td>
+                        {% set pts = user.points|default(0) %}
+                        {% if 'Chủ Nhân' in user.badges %}
+                            <span class="badge bg-warning text-dark">👑 Chủ Nhân</span>
+                        {% elif 'Thách Đấu' in user.badges or pts >= 5000 %}
+                            <span class="badge bg-danger">Thách Đấu</span>
+                        {% elif 'Đại Cao Thủ' in user.badges or pts >= 2000 %}
+                            <span class="badge bg-purple">Đại Cao Thủ</span>
+                        {% elif 'Huyền thoại' in user.badges or pts >= 1000 %}
+                            <span class="badge bg-info">Huyền thoại</span>
+                        {% elif 'Cao thủ' in user.badges or pts >= 500 %}
+                            <span class="badge bg-primary">Cao thủ</span>
+                        {% elif 'Người mới' in user.badges or pts >= 100 %}
+                            <span class="badge bg-secondary">Người mới</span>
+                        {% else %}
+                            <span class="badge bg-light text-dark">Chưa có rank</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

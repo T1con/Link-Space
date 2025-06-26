@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,8 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='icon-192.png') }}">
     
     <title>{% block title %}Link Space{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -156,41 +157,78 @@
     </style>
     {% block head %}{% endblock %}
 </head>
-<body>
-    <div class="mobile-container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/home"><i class="fa-solid fa-link"></i> Link Space</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">Link Space</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/home"><i class="fa fa-home"></i> Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/create_post"><i class="fa fa-plus"></i> Đăng bài</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/messages"><i class="fa fa-comments"></i> Tin nhắn</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/profile/{{ session.username }}"><i class="fa fa-user"></i> Cá nhân</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout"><i class="fa fa-sign-out-alt"></i> Đăng xuất</a></li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    {% if session.get('username') %}
+                    <li class="nav-item me-2">
+                        <a class="nav-link" href="/profile/{{ session['username'] }}">
+                            <img src="{{ url_for('static', filename='avatars/' + session['username'] + '.png') }}" onerror="this.src='{{ url_for('static', filename='avatars/default.png') }}'" class="rounded-circle" width="32" height="32" alt="avatar">
+                            {{ session['username'] }}
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/profile/{{ session['username'] }}">Trang cá nhân</a></li>
+                            <li><a class="dropdown-item" href="/edit_profile">Chỉnh sửa hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="/messages">Tin nhắn</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="/logout">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary" href="/login">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-primary" href="/register">Đăng ký</a>
+                    </li>
+                    {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
-        <div class="container">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show position-fixed" style="top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: 90%;">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Main layout -->
+    <div class="container-fluid" style="margin-top: 80px;">
+        <div class="row">
+            <!-- Left Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-none d-md-block bg-white border-end min-vh-100 p-0">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">🏠 Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile', username=session['username']) }}">👤 Trang cá nhân</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('messages') }}">💬 Tin nhắn</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('communities') }}">👥 Cộng đồng</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('groups') }}">👥 Nhóm chat</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('pet_shop') }}">🐾 Pet</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('character_shop') }}">🧑‍🎤 Nhân vật</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('change_password') }}">🔑 Đổi mật khẩu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('rank') }}">🏆 Rank</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">🚪 Đăng xuất</a></li>
+                    </ul>
                   </div>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
+            </nav>
+            <!-- Feed/Main Content -->
+            <main class="col-12 col-md-6 py-3">
             {% block content %}{% endblock %}
+            </main>
+            <!-- Right Sidebar (dự phòng cho thông báo, bạn bè, v.v.) -->
+            <aside class="col-lg-4 d-none d-lg-block">
+                <!-- Có thể thêm thông báo, gợi ý bạn bè, trending, v.v. ở đây -->
+            </aside>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     
     <!-- Service Worker for PWA -->

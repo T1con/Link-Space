@@ -3,45 +3,61 @@
 {% block title %}Tin nhắn - Link Space{% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-light bg-white shadow-sm mb-3">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-        <h5 class="mb-0">Tin nhắn</h5>
-        <div></div>
-    </div>
-</nav>
-<div class="container-fluid p-0">
-    <div class="card mb-0">
-        <div class="card-body p-0">
-            {% if conversations %}
-            <ul class="list-group list-group-flush">
-                {% for convo in conversations %}
-                <a href="{{ url_for('chat', username=convo.username) }}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" style="text-decoration:none;">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='avatars/' + convo.username + '.png') }}" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;border:2px solid #667eea;" onerror="this.src='https://ui-avatars.com/api/?name={{ convo.username }}&background=667eea&color=fff&size=48'">
-                        <div>
-                            <div class="fw-bold">@{{ convo.username }}</div>
-                            <div class="text-muted small text-truncate" style="max-width:180px;">{{ convo.last_message }}</div>
+<div class="container-fluid p-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-comments"></i> Tin nhắn
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if conversations %}
+                        <div class="list-group list-group-flush">
+                            {% for conversation_key, messages in conversations.items() %}
+                                {% set other_user = conversation_key.replace(username + '_', '').replace('_' + username, '') %}
+                                {% set last_message = messages[-1] if messages else None %}
+                                <a href="{{ url_for('chat', username=other_user) }}" class="list-group-item list-group-item-action">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ url_for('static', filename='avatars/' + other_user + '.png') }}" 
+                                             alt="Avatar" class="rounded-circle me-3" 
+                                             style="width: 50px; height: 50px; object-fit: cover; border: 2px solid #667eea;"
+                                             onerror="this.src='https://ui-avatars.com/api/?name={{ other_user }}&background=667eea&color=fff&size=50'">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-bold">@{{ other_user }}</h6>
+                                            {% if last_message %}
+                                                <p class="mb-1 text-muted small">
+                                                    {% if last_message.sender == username %}
+                                                        <i class="fas fa-reply text-primary"></i> Bạn: 
+                                                    {% else %}
+                                                        <i class="fas fa-user text-secondary"></i> 
+                                                    {% endif %}
+                                                    {{ last_message.content[:50] }}{% if last_message.content|length > 50 %}...{% endif %}
+                                                </p>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock"></i> {{ last_message.timestamp }}
+                                                </small>
+                                            {% else %}
+                                                <p class="mb-1 text-muted small">Chưa có tin nhắn</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="ms-auto">
+                                            <i class="fas fa-chevron-right text-muted"></i>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
                         </div>
-                    </div>
-                    <div class="text-end">
-                        <div class="small text-muted">{{ convo.last_time }}</div>
-                        {% if convo.unread_count > 0 %}
-                        <span class="badge bg-danger">{{ convo.unread_count }}</span>
-                        {% endif %}
-                    </div>
-                </a>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <div class="text-center py-5">
-                <i class="fas fa-comments fa-3x text-muted mb-3"></i>
-                <h5 class="text-muted">Chưa có hội thoại nào</h5>
-                <p class="text-muted">Hãy bắt đầu trò chuyện với bạn bè!</p>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Chưa có cuộc trò chuyện nào</h5>
+                            <p class="text-muted">Bắt đầu trò chuyện với bạn bè!</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-            {% endif %}
         </div>
     </div>
 </div>

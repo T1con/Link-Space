@@ -1,0 +1,717 @@
+{% extends 'base.html' %}
+{% block title %}Cộng đồng | Link Space{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Cộng đồng</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    
+    <!-- Tạo cộng đồng mới -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-8">
+            <form method="POST" class="row g-2 align-items-end">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="name" placeholder="Tên cộng đồng" required>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="description" placeholder="Mô tả (tùy chọn)">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100"><i class="fas fa-plus"></i> Tạo mới</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Danh sách cộng đồng -->
+    <div class="row mb-4">
+        {% for c in communities %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <!-- Ảnh bìa cộng đồng -->
+                {% if c.cover %}
+                    <img src="{{ url_for('uploaded_files', filename=c.cover) }}" 
+                         class="card-img-top" alt="Cover" style="height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" 
+                         style="height: 150px;">
+                        <i class="fas fa-image fa-3x text-white"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <!-- Avatar cộng đồng -->
+                        {% if c.avatar %}
+                            <img src="{{ url_for('uploaded_files', filename=c.avatar) }}" 
+                                 class="rounded-circle me-3" alt="Avatar" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <div>
+                            <h5 class="card-title mb-0">{{ c.name }}</h5>
+                            <small class="text-muted">Admin: {{ c.admin }}</small>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text">{{ c.description }}</p>
+                    <p class="mb-2"><strong>Thành viên:</strong> {{ c.members|length }}</p>
+                    
+                    <div class="d-grid gap-2">
+                        {% if session.username in c.members %}
+                            <a href="?leave={{ c.id }}" class="btn btn-danger">Rời nhóm</a>
+                        {% else %}
+                            <a href="?join={{ c.id }}" class="btn btn-primary">Tham gia</a>
+                        {% endif %}
+                        
+                        {% if c.admin == session.username %}
+                            <a href="{{ url_for('edit_community', community_id=c.id) }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">Chưa có cộng đồng nào.</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Tabs cho các tính năng cộng đồng -->
+    {% if communities %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="communityTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="topics-tab" data-bs-toggle="tab" data-bs-target="#topics" type="button" role="tab">
+                                <i class="fas fa-comments"></i> Chủ đề thảo luận
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="polls-tab" data-bs-toggle="tab" data-bs-target="#polls" type="button" role="tab">
+                                <i class="fas fa-poll"></i> Bình chọn
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab">
+                                <i class="fas fa-calendar-alt"></i> Sự kiện
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="leaderboard-tab" data-bs-toggle="tab" data-bs-target="#leaderboard" type="button" role="tab">
+                                <i class="fas fa-trophy"></i> Bảng xếp hạng
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="communityTabContent">
+                        <!-- Tab Chủ đề thảo luận -->
+                        <div class="tab-pane fade show active" id="topics" role="tabpanel">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="topicCommunitySelect">
+                                        <option value="">Chọn cộng đồng...</option>
+                                        {% for c in communities %}
+                                            {% if session.username in c.members %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" onclick="openCreateTopicModal()">
+                                        <i class="fas fa-plus"></i> Tạo chủ đề mới
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="topicsList">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-comments fa-3x mb-3"></i>
+                                    <p>Chọn cộng đồng để xem chủ đề thảo luận</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Bình chọn -->
+                        <div class="tab-pane fade" id="polls" role="tabpanel">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="pollCommunitySelect">
+                                        <option value="">Chọn cộng đồng...</option>
+                                        {% for c in communities %}
+                                            {% if session.username in c.members %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" onclick="openCreatePollModal()">
+                                        <i class="fas fa-plus"></i> Tạo bình chọn mới
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="pollsList">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-poll fa-3x mb-3"></i>
+                                    <p>Chọn cộng đồng để xem bình chọn</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Sự kiện -->
+                        <div class="tab-pane fade" id="events" role="tabpanel">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="eventCommunitySelect">
+                                        <option value="">Chọn cộng đồng...</option>
+                                        {% for c in communities %}
+                                            {% if session.username in c.members %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary" onclick="openCreateEventModal()">
+                                        <i class="fas fa-plus"></i> Tạo sự kiện mới
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="eventsList">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-calendar-alt fa-3x mb-3"></i>
+                                    <p>Chọn cộng đồng để xem sự kiện</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Bảng xếp hạng -->
+                        <div class="tab-pane fade" id="leaderboard" role="tabpanel">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="leaderboardCommunitySelect">
+                                        <option value="">Chọn cộng đồng...</option>
+                                        {% for c in communities %}
+                                            {% if session.username in c.members %}
+                                            <option value="{{ c.id }}">{{ c.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="leaderboardList">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-trophy fa-3x mb-3"></i>
+                                    <p>Chọn cộng đồng để xem bảng xếp hạng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal tạo chủ đề -->
+<div class="modal fade" id="createTopicModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo chủ đề thảo luận mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createTopicForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề</label>
+                        <input type="text" class="form-control" id="topicTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nội dung</label>
+                        <textarea class="form-control" id="topicContent" rows="4" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="createTopic()">Tạo chủ đề</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal tạo bình chọn -->
+<div class="modal fade" id="createPollModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo bình chọn mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPollForm">
+                    <div class="mb-3">
+                        <label class="form-label">Câu hỏi</label>
+                        <input type="text" class="form-control" id="pollQuestion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Các lựa chọn</label>
+                        <div id="pollOptions">
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control poll-option" placeholder="Lựa chọn 1" required>
+                            </div>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control poll-option" placeholder="Lựa chọn 2" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPollOption()">
+                            <i class="fas fa-plus"></i> Thêm lựa chọn
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Thời hạn (ngày)</label>
+                        <input type="number" class="form-control" id="pollDuration" value="7" min="1" max="30">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="createPoll()">Tạo bình chọn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal tạo sự kiện -->
+<div class="modal fade" id="createEventModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tạo sự kiện mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createEventForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tên sự kiện</label>
+                        <input type="text" class="form-control" id="eventTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="eventDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Địa điểm</label>
+                        <input type="text" class="form-control" id="eventLocation" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Thời gian</label>
+                        <input type="datetime-local" class="form-control" id="eventDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số người tham gia tối đa (tùy chọn)</label>
+                        <input type="number" class="form-control" id="eventMaxParticipants" min="1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="createEvent()">Tạo sự kiện</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentCommunityId = null;
+
+// Event listeners cho các select
+document.getElementById('topicCommunitySelect').addEventListener('change', function() {
+    currentCommunityId = this.value;
+    if (currentCommunityId) {
+        loadTopics(currentCommunityId);
+    }
+});
+
+document.getElementById('pollCommunitySelect').addEventListener('change', function() {
+    currentCommunityId = this.value;
+    if (currentCommunityId) {
+        loadPolls(currentCommunityId);
+    }
+});
+
+document.getElementById('eventCommunitySelect').addEventListener('change', function() {
+    currentCommunityId = this.value;
+    if (currentCommunityId) {
+        loadEvents(currentCommunityId);
+    }
+});
+
+document.getElementById('leaderboardCommunitySelect').addEventListener('change', function() {
+    currentCommunityId = this.value;
+    if (currentCommunityId) {
+        loadLeaderboard(currentCommunityId);
+    }
+});
+
+// Functions cho chủ đề thảo luận
+function openCreateTopicModal() {
+    if (!currentCommunityId) {
+        alert('Vui lòng chọn cộng đồng trước!');
+        return;
+    }
+    new bootstrap.Modal(document.getElementById('createTopicModal')).show();
+}
+
+function createTopic() {
+    const title = document.getElementById('topicTitle').value;
+    const content = document.getElementById('topicContent').value;
+    
+    if (!title || !content) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+    }
+    
+    fetch('/api/community/create_topic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            community_id: currentCommunityId,
+            title: title,
+            content: content
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('createTopicModal')).hide();
+            document.getElementById('createTopicForm').reset();
+            loadTopics(currentCommunityId);
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
+}
+
+function loadTopics(communityId) {
+    fetch(`/api/community/topics/${communityId}`)
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('topicsList');
+        if (data.topics && data.topics.length > 0) {
+            container.innerHTML = data.topics.map(topic => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">${topic.title}</h6>
+                        <p class="card-text">${topic.content}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user"></i> ${topic.author} | 
+                                <i class="fas fa-clock"></i> ${topic.created_at} |
+                                <i class="fas fa-comment"></i> ${topic.comments.length} |
+                                <i class="fas fa-heart"></i> ${topic.likes.length}
+                            </small>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewTopic('${topic.id}')">
+                                Xem chi tiết
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="text-center text-muted"><p>Chưa có chủ đề nào</p></div>';
+        }
+    });
+}
+
+// Functions cho bình chọn
+function openCreatePollModal() {
+    if (!currentCommunityId) {
+        alert('Vui lòng chọn cộng đồng trước!');
+        return;
+    }
+    new bootstrap.Modal(document.getElementById('createPollModal')).show();
+}
+
+function addPollOption() {
+    const container = document.getElementById('pollOptions');
+    const optionCount = container.children.length + 1;
+    const newOption = document.createElement('div');
+    newOption.className = 'input-group mb-2';
+    newOption.innerHTML = `
+        <input type="text" class="form-control poll-option" placeholder="Lựa chọn ${optionCount}" required>
+        <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    container.appendChild(newOption);
+}
+
+function createPoll() {
+    const question = document.getElementById('pollQuestion').value;
+    const duration = document.getElementById('pollDuration').value;
+    const options = Array.from(document.querySelectorAll('.poll-option')).map(opt => opt.value).filter(opt => opt.trim());
+    
+    if (!question || options.length < 2) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+    }
+    
+    fetch('/api/community/create_poll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            community_id: currentCommunityId,
+            question: question,
+            options: options,
+            duration_days: parseInt(duration)
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('createPollModal')).hide();
+            document.getElementById('createPollForm').reset();
+            document.getElementById('pollOptions').innerHTML = `
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control poll-option" placeholder="Lựa chọn 1" required>
+                </div>
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control poll-option" placeholder="Lựa chọn 2" required>
+                </div>
+            `;
+            loadPolls(currentCommunityId);
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
+}
+
+function loadPolls(communityId) {
+    fetch(`/api/community/polls/${communityId}`)
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('pollsList');
+        if (data.polls && data.polls.length > 0) {
+            container.innerHTML = data.polls.map(poll => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">${poll.question}</h6>
+                        <div class="mb-3">
+                            ${poll.options.map((option, index) => `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="poll_${poll.id}" value="${index}" id="poll_${poll.id}_${index}">
+                                    <label class="form-check-label" for="poll_${poll.id}_${index}">
+                                        ${option.text} (${option.votes} phiếu)
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user"></i> ${poll.author} | 
+                                <i class="fas fa-clock"></i> ${poll.created_at} |
+                                <i class="fas fa-calendar-times"></i> ${poll.end_date}
+                            </small>
+                            <button class="btn btn-sm btn-primary" onclick="votePoll('${poll.id}')">
+                                Bình chọn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="text-center text-muted"><p>Chưa có bình chọn nào</p></div>';
+        }
+    });
+}
+
+function votePoll(pollId) {
+    const selectedOption = document.querySelector(`input[name="poll_${pollId}"]:checked`);
+    if (!selectedOption) {
+        alert('Vui lòng chọn một lựa chọn!');
+        return;
+    }
+    
+    fetch('/api/community/vote_poll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            poll_id: pollId,
+            option_index: parseInt(selectedOption.value)
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            loadPolls(currentCommunityId);
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
+}
+
+// Functions cho sự kiện
+function openCreateEventModal() {
+    if (!currentCommunityId) {
+        alert('Vui lòng chọn cộng đồng trước!');
+        return;
+    }
+    new bootstrap.Modal(document.getElementById('createEventModal')).show();
+}
+
+function createEvent() {
+    const title = document.getElementById('eventTitle').value;
+    const description = document.getElementById('eventDescription').value;
+    const location = document.getElementById('eventLocation').value;
+    const date = document.getElementById('eventDate').value;
+    const maxParticipants = document.getElementById('eventMaxParticipants').value;
+    
+    if (!title || !description || !location || !date) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+    }
+    
+    fetch('/api/community/create_event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            community_id: currentCommunityId,
+            title: title,
+            description: description,
+            location: location,
+            event_date: date,
+            max_participants: maxParticipants ? parseInt(maxParticipants) : null
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('createEventModal')).hide();
+            document.getElementById('createEventForm').reset();
+            loadEvents(currentCommunityId);
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
+}
+
+function loadEvents(communityId) {
+    fetch(`/api/community/events/${communityId}`)
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('eventsList');
+        if (data.events && data.events.length > 0) {
+            container.innerHTML = data.events.map(event => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">${event.title}</h6>
+                        <p class="card-text">${event.description}</p>
+                        <div class="mb-2">
+                            <small class="text-muted">
+                                <i class="fas fa-map-marker-alt"></i> ${event.location} | 
+                                <i class="fas fa-calendar"></i> ${event.event_date} |
+                                <i class="fas fa-users"></i> ${event.participants.length}${event.max_participants ? '/' + event.max_participants : ''} tham gia
+                            </small>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user"></i> ${event.author} | 
+                                <i class="fas fa-clock"></i> ${event.created_at}
+                            </small>
+                            <button class="btn btn-sm btn-primary" onclick="joinEvent('${event.id}')">
+                                Tham gia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<div class="text-center text-muted"><p>Chưa có sự kiện nào</p></div>';
+        }
+    });
+}
+
+function joinEvent(eventId) {
+    fetch('/api/community/join_event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_id: eventId })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            loadEvents(currentCommunityId);
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
+}
+
+// Functions cho bảng xếp hạng
+function loadLeaderboard(communityId) {
+    fetch(`/api/community/leaderboard/${communityId}`)
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('leaderboardList');
+        if (data.leaderboard && data.leaderboard.length > 0) {
+            container.innerHTML = `
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Thành viên</th>
+                                <th>Điểm</th>
+                                <th>Cấp độ</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.leaderboard.map((member, index) => `
+                                <tr>
+                                    <td>
+                                        ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
+                                    </td>
+                                    <td><strong>@${member.username}</strong></td>
+                                    <td>${member.points}</td>
+                                    <td><span class="badge bg-primary">Level ${member.level}</span></td>
+                                    <td>
+                                        <small class="text-muted">
+                                            ${Object.entries(member.actions).map(([action, count]) => 
+                                                `${action}: ${count}`
+                                            ).join(', ')}
+                                        </small>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } else {
+            container.innerHTML = '<div class="text-center text-muted"><p>Chưa có dữ liệu bảng xếp hạng</p></div>';
+        }
+    });
+}
+</script>
+{% endblock %} 

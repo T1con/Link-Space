@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Backup & Restore | Link Space{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Sao lưu & Khôi phục dữ liệu</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    <div class="mb-4">
+        <a href="/backup" class="btn btn-primary"><i class="fas fa-download"></i> Tải backup dữ liệu cá nhân</a>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Khôi phục dữ liệu từ file backup</h5>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="backup_file" accept=".zip" required>
+                </div>
+                <button type="submit" class="btn btn-success"><i class="fas fa-upload"></i> Khôi phục</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

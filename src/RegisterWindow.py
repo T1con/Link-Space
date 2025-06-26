@@ -5,6 +5,7 @@ import json
 import uuid
 from utils import center_window
 import os
+import werkzeug.security
 
 class RegisterWindow(QWidget):
     def __init__(self):
@@ -185,7 +186,8 @@ class RegisterWindow(QWidget):
                 QMessageBox.warning(self, "Lỗi", "Tên người dùng đã tồn tại. Vui lòng chọn tên khác.")
                 return
 
-        users.append({"id": id, "username": username, "password": password, "birthday": birthday, "gender": gender})
+        password_hash = werkzeug.security.generate_password_hash(password)
+        users.append({"id": id, "username": username, "password_hash": password_hash, "birthday": birthday, "gender": gender})
 
         try:
             with open("data/users.json", "w", encoding="utf-8") as f:

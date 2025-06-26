@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Nhóm chat | Link Space{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Nhóm chat</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">{{ success }}</div>
+    {% endif %}
+    <div class="row mb-4">
+        <div class="col-12 col-md-10">
+            <form method="POST" class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="name" placeholder="Tên nhóm" required>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-wrap">
+                        {% for u in users %}
+                        <div class="form-check me-3 mb-1">
+                            <input class="form-check-input" type="checkbox" name="members" value="{{ u }}" id="user-{{ u }}">
+                            <label class="form-check-label" for="user-{{ u }}">@{{ u }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success w-100"><i class="fas fa-plus"></i> Tạo nhóm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        {% for g in groups %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ g.name }}</h5>
+                    <p class="mb-2"><strong>Thành viên:</strong> {{ g.members|length }}</p>
+                    {% if session.username in g.members %}
+                        <a href="?leave={{ g.id }}" class="btn btn-danger w-100">Rời nhóm</a>
+                    {% else %}
+                        <a href="?join={{ g.id }}" class="btn btn-primary w-100">Tham gia</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">Chưa có nhóm chat nào.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

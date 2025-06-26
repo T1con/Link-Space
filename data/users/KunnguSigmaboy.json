@@ -2,7 +2,9 @@
     "followers": [],
     "friends": [],
     "following": [],
-    "friend_requests": [],
+    "friend_requests": [
+        "T1con"
+    ],
     "gender": "Nam",
     "birthday": "5/10/2015"
-} 
+}

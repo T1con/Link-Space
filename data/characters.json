@@ -1,33 +1,226 @@
 [
-  {"id": "char_m_01", "name": "Minh Quân", "gender": "male", "image": "data/characters/char_m_01.png", "price": 100},
-  {"id": "char_m_02", "name": "Anh Dũng", "gender": "male", "image": "data/characters/char_m_02.png", "price": 120},
-  {"id": "char_m_03", "name": "Bảo Long", "gender": "male", "image": "data/characters/char_m_03.png", "price": 140},
-  {"id": "char_m_04", "name": "Hữu Phúc", "gender": "male", "image": "data/characters/char_m_04.png", "price": 160},
-  {"id": "char_m_05", "name": "Quốc Huy", "gender": "male", "image": "data/characters/char_m_05.png", "price": 180},
-  {"id": "char_m_06", "name": "Gia Bảo", "gender": "male", "image": "data/characters/char_m_06.png", "price": 200},
-  {"id": "char_m_07", "name": "Tuấn Kiệt", "gender": "male", "image": "data/characters/char_m_07.png", "price": 220},
-  {"id": "char_m_08", "name": "Đức Anh", "gender": "male", "image": "data/characters/char_m_08.png", "price": 240},
-  {"id": "char_m_09", "name": "Khánh Duy", "gender": "male", "image": "data/characters/char_m_09.png", "price": 260},
-  {"id": "char_m_10", "name": "Phúc Thịnh", "gender": "male", "image": "data/characters/char_m_10.png", "price": 280},
-  {"id": "char_m_11", "name": "Hoàng Nam", "gender": "male", "image": "data/characters/char_m_11.png", "price": 300},
-  {"id": "char_m_12", "name": "Duy Khang", "gender": "male", "image": "data/characters/char_m_12.png", "price": 320},
-  {"id": "char_m_13", "name": "Văn Khôi", "gender": "male", "image": "data/characters/char_m_13.png", "price": 340},
-  {"id": "char_m_14", "name": "Hải Đăng", "gender": "male", "image": "data/characters/char_m_14.png", "price": 360},
-  {"id": "char_m_15", "name": "Trọng Nghĩa", "gender": "male", "image": "data/characters/char_m_15.png", "price": 380},
-  {"id": "char_f_01", "name": "Bảo Ngọc", "gender": "female", "image": "data/characters/char_f_01.png", "price": 100},
-  {"id": "char_f_02", "name": "Khánh Linh", "gender": "female", "image": "data/characters/char_f_02.png", "price": 120},
-  {"id": "char_f_03", "name": "Minh Châu", "gender": "female", "image": "data/characters/char_f_03.png", "price": 140},
-  {"id": "char_f_04", "name": "Thu Trang", "gender": "female", "image": "data/characters/char_f_04.png", "price": 160},
-  {"id": "char_f_05", "name": "Phương Thảo", "gender": "female", "image": "data/characters/char_f_05.png", "price": 180},
-  {"id": "char_f_06", "name": "Ngọc Hân", "gender": "female", "image": "data/characters/char_f_06.png", "price": 200},
-  {"id": "char_f_07", "name": "Quỳnh Anh", "gender": "female", "image": "data/characters/char_f_07.png", "price": 220},
-  {"id": "char_f_08", "name": "Hà My", "gender": "female", "image": "data/characters/char_f_08.png", "price": 240},
-  {"id": "char_f_09", "name": "Tú Anh", "gender": "female", "image": "data/characters/char_f_09.png", "price": 260},
-  {"id": "char_f_10", "name": "Thanh Vân", "gender": "female", "image": "data/characters/char_f_10.png", "price": 280},
-  {"id": "char_f_11", "name": "Kim Ngân", "gender": "female", "image": "data/characters/char_f_11.png", "price": 300},
-  {"id": "char_f_12", "name": "Diễm Quỳnh", "gender": "female", "image": "data/characters/char_f_12.png", "price": 320},
-  {"id": "char_f_13", "name": "Hồng Nhung", "gender": "female", "image": "data/characters/char_f_13.png", "price": 340},
-  {"id": "char_f_14", "name": "Mai Phương", "gender": "female", "image": "data/characters/char_f_14.png", "price": 360},
-  {"id": "char_f_15", "name": "Trúc Lam", "gender": "female", "image": "data/characters/char_f_15.png", "price": 380},
-  {"id": "char_pm", "name": "Phương Minh", "gender": "female", "image": "data/characters/char_pm.png", "price": 10000000000000000000000000000}
-] 
+  {
+    "id": "char_m_01",
+    "name": "Minh Quân",
+    "gender": "male",
+    "image": "characters/char_m_01.png",
+    "price": 100
+  },
+  {
+    "id": "char_m_02",
+    "name": "Anh Dũng",
+    "gender": "male",
+    "image": "characters/char_m_02.png",
+    "price": 120
+  },
+  {
+    "id": "char_m_03",
+    "name": "Bảo Long",
+    "gender": "male",
+    "image": "characters/char_m_03.png",
+    "price": 140
+  },
+  {
+    "id": "char_m_04",
+    "name": "Hữu Phúc",
+    "gender": "male",
+    "image": "characters/char_m_04.png",
+    "price": 160
+  },
+  {
+    "id": "char_m_05",
+    "name": "Quốc Huy",
+    "gender": "male",
+    "image": "characters/char_m_05.png",
+    "price": 180
+  },
+  {
+    "id": "char_m_06",
+    "name": "Gia Bảo",
+    "gender": "male",
+    "image": "characters/char_m_06.png",
+    "price": 200
+  },
+  {
+    "id": "char_m_07",
+    "name": "Tuấn Kiệt",
+    "gender": "male",
+    "image": "characters/char_m_07.png",
+    "price": 220
+  },
+  {
+    "id": "char_m_08",
+    "name": "Đức Anh",
+    "gender": "male",
+    "image": "characters/char_m_08.png",
+    "price": 240
+  },
+  {
+    "id": "char_m_09",
+    "name": "Khánh Duy",
+    "gender": "male",
+    "image": "characters/char_m_09.png",
+    "price": 260
+  },
+  {
+    "id": "char_m_10",
+    "name": "Phúc Thịnh",
+    "gender": "male",
+    "image": "characters/char_m_10.png",
+    "price": 280
+  },
+  {
+    "id": "char_m_11",
+    "name": "Hoàng Nam",
+    "gender": "male",
+    "image": "characters/char_m_11.png",
+    "price": 300
+  },
+  {
+    "id": "char_m_12",
+    "name": "Duy Khang",
+    "gender": "male",
+    "image": "characters/char_m_12.png",
+    "price": 320
+  },
+  {
+    "id": "char_m_13",
+    "name": "Văn Khôi",
+    "gender": "male",
+    "image": "characters/char_m_13.png",
+    "price": 340
+  },
+  {
+    "id": "char_m_14",
+    "name": "Hải Đăng",
+    "gender": "male",
+    "image": "characters/char_m_14.png",
+    "price": 360
+  },
+  {
+    "id": "char_m_15",
+    "name": "Trọng Nghĩa",
+    "gender": "male",
+    "image": "characters/char_m_15.png",
+    "price": 380
+  },
+  {
+    "id": "char_f_01",
+    "name": "Bảo Ngọc",
+    "gender": "female",
+    "image": "characters/char_f_01.png",
+    "price": 100
+  },
+  {
+    "id": "char_f_02",
+    "name": "Khánh Linh",
+    "gender": "female",
+    "image": "characters/char_f_02.png",
+    "price": 120
+  },
+  {
+    "id": "char_f_03",
+    "name": "Minh Châu",
+    "gender": "female",
+    "image": "characters/char_f_03.png",
+    "price": 140
+  },
+  {
+    "id": "char_f_04",
+    "name": "Thu Trang",
+    "gender": "female",
+    "image": "characters/char_f_04.png",
+    "price": 160
+  },
+  {
+    "id": "char_f_05",
+    "name": "Phương Thảo",
+    "gender": "female",
+    "image": "characters/char_f_05.png",
+    "price": 180
+  },
+  {
+    "id": "char_f_06",
+    "name": "Ngọc Hân",
+    "gender": "female",
+    "image": "characters/char_f_06.png",
+    "price": 200
+  },
+  {
+    "id": "char_f_07",
+    "name": "Quỳnh Anh",
+    "gender": "female",
+    "image": "characters/char_f_07.png",
+    "price": 220
+  },
+  {
+    "id": "char_f_08",
+    "name": "Hà My",
+    "gender": "female",
+    "image": "characters/char_f_08.png",
+    "price": 240
+  },
+  {
+    "id": "char_f_09",
+    "name": "Tú Anh",
+    "gender": "female",
+    "image": "characters/char_f_09.png",
+    "price": 260
+  },
+  {
+    "id": "char_f_10",
+    "name": "Thanh Vân",
+    "gender": "female",
+    "image": "characters/char_f_10.png",
+    "price": 280
+  },
+  {
+    "id": "char_f_11",
+    "name": "Kim Ngân",
+    "gender": "female",
+    "image": "characters/char_f_11.png",
+    "price": 300
+  },
+  {
+    "id": "char_f_12",
+    "name": "Diễm Quỳnh",
+    "gender": "female",
+    "image": "characters/char_f_12.png",
+    "price": 320
+  },
+  {
+    "id": "char_f_13",
+    "name": "Hồng Nhung",
+    "gender": "female",
+    "image": "characters/char_f_13.png",
+    "price": 340
+  },
+  {
+    "id": "char_f_14",
+    "name": "Mai Phương",
+    "gender": "female",
+    "image": "characters/char_f_14.png",
+    "price": 360
+  },
+  {
+    "id": "char_f_15",
+    "name": "Trúc Lam",
+    "gender": "female",
+    "image": "characters/char_f_15.png",
+    "price": 380
+  },
+  {
+    "id": "char_pm",
+    "name": "PM",
+    "gender": "female",
+    "image": "characters/char_pm.png",
+    "price": 10000000000000000000000000000
+  },
+  {
+    "id": "char_tv",
+    "name": "TV",
+    "gender": "male",
+    "image": "characters/char_tv.png",
+    "price": 99999999999999999999999999999
+  }
+]

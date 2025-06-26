@@ -21,14 +21,20 @@ class SettingsWindow(QDialog):
         self.theme_combo.addItem("Sáng (Light)", "light")
         layout.addWidget(self.theme_combo)
 
-        # Load current theme
+        # Load current theme, bổ sung trường mặc định nếu thiếu
         user_path = f"data/users/{self.current_user}.json"
+        user_data = {"theme": "dark"}
         if os.path.exists(user_path):
-            with open(user_path, "r", encoding="utf-8") as f:
-                user_data = json.load(f)
-            theme = user_data.get("theme", "dark")
-            idx = 0 if theme == "dark" else 1
-            self.theme_combo.setCurrentIndex(idx)
+            try:
+                with open(user_path, "r", encoding="utf-8") as f:
+                    user_data = json.load(f)
+            except Exception:
+                QMessageBox.critical(self, "Lỗi", "Không thể đọc dữ liệu user setting!")
+        if "theme" not in user_data:
+            user_data["theme"] = "dark"
+        theme = user_data.get("theme", "dark")
+        idx = 0 if theme == "dark" else 1
+        self.theme_combo.setCurrentIndex(idx)
 
         save_btn = QPushButton("Lưu")
         save_btn.clicked.connect(self.save_theme)
@@ -52,16 +58,21 @@ class SettingsWindow(QDialog):
     def save_theme(self):
         theme = self.theme_combo.currentData()
         user_path = f"data/users/{self.current_user}.json"
+        user_data = {}
         if os.path.exists(user_path):
-            with open(user_path, "r", encoding="utf-8") as f:
-                user_data = json.load(f)
-        else:
-            user_data = {}
+            try:
+                with open(user_path, "r", encoding="utf-8") as f:
+                    user_data = json.load(f)
+            except Exception:
+                user_data = {}
         user_data["theme"] = theme
-        with open(user_path, "w", encoding="utf-8") as f:
-            json.dump(user_data, f, indent=4, ensure_ascii=False)
-        QMessageBox.information(self, "Thành công", "Đã lưu giao diện! Hãy đăng nhập lại để áp dụng theme mới.")
-        self.accept()
+        try:
+            with open(user_path, "w", encoding="utf-8") as f:
+                json.dump(user_data, f, indent=4, ensure_ascii=False)
+            QMessageBox.information(self, "Thành công", "Đã lưu giao diện! Hãy đăng nhập lại để áp dụng theme mới.")
+            self.accept()
+        except Exception as e:
+            QMessageBox.critical(self, "Lỗi", f"Không thể lưu setting: {e}")
 
     def open_change_password_dialog(self):
         dialog = ChangePasswordDialog(self.current_user)

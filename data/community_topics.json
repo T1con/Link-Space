@@ -1,0 +1,60 @@
+[
+    {
+        "id": "45966796",
+        "community_id": "demo_comm_001",
+        "title": "Game yêu thích nhất 2024",
+        "content": "Các bạn thích game nào nhất trong năm 2024? Chia sẻ kinh nghiệm chơi game nhé!",
+        "author": "user1",
+        "created_at": "2025-06-26 10:14:17",
+        "comments": [
+            {
+                "id": "33bd51a9",
+                "content": "Mình thích Genshin Impact, đồ họa đẹp quá!",
+                "author": "user2",
+                "created_at": "2025-06-26 10:14:17",
+                "likes": []
+            },
+            {
+                "id": "67ee65ac",
+                "content": "League of Legends vẫn là số 1 với mình",
+                "author": "user3",
+                "created_at": "2025-06-26 10:14:17",
+                "likes": []
+            }
+        ],
+        "likes": [
+            "user2",
+            "user3"
+        ],
+        "views": 0
+    },
+    {
+        "id": "0fec2fc7",
+        "community_id": "demo_comm_001",
+        "title": "Game yêu thích nhất 2024",
+        "content": "Các bạn thích game nào nhất trong năm 2024? Chia sẻ kinh nghiệm chơi game nhé!",
+        "author": "user1",
+        "created_at": "2025-06-26 11:27:06",
+        "comments": [
+            {
+                "id": "3f95931d",
+                "content": "Mình thích Genshin Impact, đồ họa đẹp quá!",
+                "author": "user2",
+                "created_at": "2025-06-26 11:27:06",
+                "likes": []
+            },
+            {
+                "id": "2d9259d5",
+                "content": "League of Legends vẫn là số 1 với mình",
+                "author": "user3",
+                "created_at": "2025-06-26 11:27:06",
+                "likes": []
+            }
+        ],
+        "likes": [
+            "user2",
+            "user3"
+        ],
+        "views": 0
+    }
+]

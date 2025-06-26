@@ -64,20 +64,14 @@
             <div class="card">
                 <div class="card-header bg-transparent border-0">
                     <div class="d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='avatars/' + post.username + '.png') }}" 
-                             alt="Avatar" class="rounded-circle me-2" 
-                             style="width: 44px; height: 44px; object-fit: cover; border: 2px solid #667eea;"
-                             onerror="this.src='https://ui-avatars.com/api/?name={{ post.username }}&background=667eea&color=fff&size=44'">
+                        <a href="{{ url_for('profile', username=post.username) }}">
+                            <img src="{{ url_for('static', filename=users[post.username].avatar|default('avatars/default.png')) if users[post.username] and users[post.username].avatar else url_for('static', filename='avatars/default.png') }}" 
+                                 alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #667eea;"
+                                 onerror="this.src='https://ui-avatars.com/api/?name={{ post.username }}&background=667eea&color=fff&size=40'">
+                        </a>
                         <div>
-                            <h6 class="mb-0 fw-bold d-flex align-items-center">
-                                @{{ post.username }}
-                                {% if post.badge %}
-                                <span class="badge bg-warning text-dark ms-2" style="font-size:12px;">{{ post.badge }}</span>
-                                {% endif %}
-                            </h6>
-                            <small class="text-muted">
-                                <i class="fas fa-clock"></i> {{ post.timestamp }}
-                            </small>
+                            <a href="{{ url_for('profile', username=post.username) }}" class="fw-bold text-decoration-none text-dark">@{{ post.username }}</a>
+                            <div class="text-muted small">{{ post.timestamp }}</div>
                         </div>
                     </div>
                 </div>
@@ -99,21 +93,38 @@
                     </div>
                     {% endif %}
                     
+                    {% set post_id = post.id|default(post.username + '_' + post.timestamp) %}
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <div>
                             <button class="btn btn-sm btn-outline-danger like-btn {% if username in post.likes %}liked{% endif %}" 
-                                    data-post-id="{{ post.id }}" onclick="likePost('{{ post.id }}', this)">
+                                    data-post-id="{{ post_id }}" onclick="likePost('{{ post_id }}')">
                                 <i class="{% if username in post.likes %}fas{% else %}far{% endif %} fa-heart"></i>
-                                <span data-post-count="{{ post.id }}">{{ post.likes|length }}</span>
+                                <span data-post-count="{{ post_id }}">{{ post.likes|length }}</span>
                             </button>
-                            <button class="btn btn-sm btn-outline-secondary ms-2" disabled>
-                                <i class="fas fa-comment"></i> {{ post.comments|length }}
+                            <button class="btn btn-sm btn-outline-secondary ms-2" data-bs-toggle="collapse" data-bs-target="#comments-{{ post_id }}">
+                                <i class="fas fa-comment"></i> <span id="comment-count-{{ post_id }}">{{ post.comments|length }}</span>
                             </button>
                             <button class="btn btn-sm btn-outline-info ms-2" disabled>
                                 <i class="fas fa-share"></i>
                             </button>
                         </div>
                         <!-- Có thể thêm menu chỉnh sửa/xóa nếu là chủ post -->
+                    </div>
+                </div>
+            </div>
+            <!-- Bình luận -->
+            <div class="collapse mt-2" id="comments-{{ post_id }}">
+                <div class="card card-body">
+                    <div id="comments-list-{{ post_id }}">
+                        {% for cmt in post.comments %}
+                        <div class="mb-2">
+                            <b>@{{ cmt.username }}</b>: {{ cmt.content }} <span class="text-muted small">{{ cmt.timestamp }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="input-group mt-2">
+                        <input type="text" class="form-control" id="comment-input-{{ post_id }}" placeholder="Nhập bình luận..." maxlength="300">
+                        <button class="btn btn-primary" onclick="addComment('{{ post_id }}')"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
@@ -138,18 +149,36 @@
     <i class="fas fa-plus"></i>
 </a>
 
-<!-- Like Post Script (hiệu ứng like động, không reload) -->
+{% endblock %}
+
+{% block scripts %}
 <script>
-function likePost(postId, btn) {
-    btn.classList.toggle('liked');
-    let icon = btn.querySelector('i');
-    let countSpan = btn.querySelector('span');
-    let liked = btn.classList.contains('liked');
-    icon.classList.toggle('fas', liked);
-    icon.classList.toggle('far', !liked);
-    let count = parseInt(countSpan.innerText);
-    countSpan.innerText = liked ? count + 1 : count - 1;
-    // TODO: Gửi request AJAX lên server để cập nhật like thực tế
+function addComment(postId) {
+    const input = document.getElementById('comment-input-' + postId);
+    const comment = input.value.trim();
+    if (!comment) return;
+    fetch(`/api/comment_post/${postId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ comment })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            input.value = '';
+            const list = document.getElementById('comments-list-' + postId);
+            const cmt = data.comment;
+            const div = document.createElement('div');
+            div.className = 'mb-2';
+            div.innerHTML = `<b>@${cmt.username}</b>: ${cmt.content} <span class='text-muted small'>${cmt.timestamp}</span>`;
+            list.appendChild(div);
+            // Update comment count
+            const count = document.getElementById('comment-count-' + postId);
+            count.textContent = parseInt(count.textContent) + 1;
+        } else {
+            alert(data.error || 'Có lỗi xảy ra!');
+        }
+    });
 }
 </script>
 {% endblock %} 

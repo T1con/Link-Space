@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 import json
 import os
+import werkzeug.security
 
 class ChangePasswordDialog(QDialog):
     def __init__(self, username):
@@ -53,10 +54,10 @@ class ChangePasswordDialog(QDialog):
             return
         for user in users:
             if user["username"] == self.username:
-                if user["password"] != old_pw:
+                if "password_hash" not in user or not werkzeug.security.check_password_hash(user["password_hash"], old_pw):
                     QMessageBox.warning(self, "Lỗi", "Mật khẩu cũ không đúng!")
                     return
-                user["password"] = new_pw
+                user["password_hash"] = werkzeug.security.generate_password_hash(new_pw)
                 break
         else:
             QMessageBox.critical(self, "Lỗi", "Không tìm thấy người dùng!")
