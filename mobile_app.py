@@ -5,9 +5,8 @@ Link Space Mobile - Ứng dụng mạng xã hội cho điện thoại
 Phiên bản web sử dụng Flask
 """
 
-# import eventlet
-# Monkey patch phải đặt trước mọi import khác
-# eventlet.monkey_patch()
+import eventlet
+eventlet.monkey_patch()
 
 import os
 import json
