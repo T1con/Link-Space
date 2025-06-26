@@ -2,7 +2,7 @@ import os
 import json
 from ChangePasswordDialog import ChangePasswordDialog
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QComboBox, QPushButton, QMessageBox, QFileDialog
-from common import backup_data, restore_data
+from src.common import backup_data, restore_data
 
 class SettingsWindow(QDialog):
     def __init__(self, current_user):

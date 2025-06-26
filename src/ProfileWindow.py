@@ -8,9 +8,10 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QFont, QBitmap, QPainter, QBrush, QColor, QCursor, QPolygon, QPainterPath, QImage
 from PyQt6.QtCore import Qt, QSize, QTimer, QPoint
-from PostWidget import PostWidget
-from common import add_notification, add_points_and_update_level_badge
+from src.PostWidget import PostWidget
+from src.common import add_notification, add_points_and_update_level_badge
 import math
+from src.MessageWindow import MessageWindow
 
 class ProfileWindow(QDialog):
     def __init__(self, current_id, current_user, target_user):
@@ -676,7 +677,6 @@ class ProfileWindow(QDialog):
         self.exec()
 
     def send_message(self):
-        from MessageWindow import MessageWindow
         window = MessageWindow(self.current_id, self.current_user, self.target_user)
         window.exec()
 

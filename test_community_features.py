@@ -68,7 +68,7 @@ def test_ui_components():
     
     try:
         from PyQt6.QtWidgets import QApplication
-        from CommunityWindow import CommunityWindow
+        from src.CommunityWindow import CommunityWindow
         
         app = QApplication(sys.argv)
         print("✅ QApplication created successfully")

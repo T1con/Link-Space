@@ -9,11 +9,11 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QPixmap, QFont, QPainter, QBrush
 from PyQt6.QtCore import Qt, QDateTime
 
-from PostWidget import PostWidget
-from ProfileWindow import ProfileWindow
-from MessageWindow import MessageWindow, GroupChatWindow
-from common import load_posts, save_post, delete_post, add_notification, load_notifications, add_points_and_update_level_badge
-from SettingsWindow import SettingsWindow
+from src.PostWidget import PostWidget
+from src.ProfileWindow import ProfileWindow
+from src.MessageWindow import MessageWindow, GroupChatWindow
+from src.common import load_posts, save_post, delete_post, add_notification, load_notifications, add_points_and_update_level_badge
+from src.SettingsWindow import SettingsWindow
 
 
 class MainWindow(QMainWindow):

@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout
 from PyQt6.QtCore import Qt
 import json
 import uuid
-from utils import center_window
+from src.utils import center_window
 import os
 import werkzeug.security
 
@@ -202,8 +202,7 @@ class RegisterWindow(QWidget):
 
     def go_to_login(self):
         # Quay lại màn hình đăng nhập
-        from LoginWindow import LoginWindow 
+        from src.LoginWindow import LoginWindow
         self.close()
         self.login_window = LoginWindow()
         self.login_window.show()
-        self.close() # Đóng cửa sổ đăng ký hiện tại

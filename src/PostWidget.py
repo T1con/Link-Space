@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QPixmap, QFont
 from PyQt6.QtCore import Qt, pyqtSignal
-from common import add_points_and_update_level_badge
+from src.common import add_points_and_update_level_badge
 
 class PostWidget(QWidget):
     delete_post_signal = pyqtSignal(dict)

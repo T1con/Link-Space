@@ -103,7 +103,7 @@ def demo_ui():
     
     try:
         from PyQt6.QtWidgets import QApplication
-        from CommunityWindow import CommunityWindow
+        from src.CommunityWindow import CommunityWindow
         
         app = QApplication(sys.argv)
         print("✅ QApplication khởi tạo thành công")
